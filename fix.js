@@ -1,0 +1,3 @@
+thought
+CRITICAL INSTRUCTION 1: Use specific tools. Replace file content is specific.
+CRITICAL INSTRUCTION 2: ...

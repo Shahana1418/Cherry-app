@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Cherry Precision Products - Application Architecture</title>
+    <style>
+        body {
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px;
+        }
+
+        h1 {
+            color: #1a1a2e;
+            text-align: center;
+            border-bottom: 2px solid #e11d48;
+            padding-bottom: 10px;
+        }
+
+        h2 {
+            color: #e11d48;
+            margin-top: 30px;
+        }
+
+        .section {
+            background: #f8fafc;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            border: 1px solid #e2e8f0;
+        }
+
+        ul {
+            margin-top: 5px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        .highlight {
+            font-weight: bold;
+            color: #1a1a2e;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 50px;
+            font-size: 12px;
+            color: #64748b;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Application Architecture & Technology Stack</h1>
+
+    <p>The <strong>Cherry Precision App</strong> is a modern, cross-platform desktop application built for
+        high-performance AirGauge monitoring, offline USB reading ingestion, and historical data analytics. Instead of
+        traditional monolithic desktop frameworks, this application leverages the lightweight, secure <strong>Tauri
+            framework</strong> to blend web frontend technologies with a systems programming backend.</p>
+
+    <div class="section">
+        <h2>1. The Frontend (UI & Interactions)</h2>
+        <p>The user interface is built securely without heavyweight JavaScript frameworks to ensure lightning-fast
+            startup times, zero bloat, and long-term maintainability.</p>
+        <ul>
+            <li><span class="highlight">Core Technologies:</span> Vanilla HTML5, CSS3, and JavaScript (ES6+).</li>
+            <li><span class="highlight">Styling:</span> Custom modular CSS. Designed around a sleek dark theme
+                (`index.css`) emphasizing rapid visual feedback, flexible grid layouts (Flexbox/Grid), and readable data
+                matrices logic natively.</li>
+            <li><span class="highlight">Visualizations:</span> <strong>Chart.js</strong> is integrated to handle all
+                complex analytics components, powering the X-Bar and Range control charts natively within the
+                Statistical Process Control (SPC) dashboard.</li>
+            <li><span class="highlight">Interactions:</span> Single-page architecture logic handled purely via Vanilla
+                JavaScript DOM manipulation (`main.js`), avoiding overhead from Virtual DOMs.</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>2. The Backend (Core Logic & Native OS Integrity)</h2>
+        <p>The backend requires low-level system access to communicate seamlessly with hardware via serial COM ports and
+            to parse bulky database archives. This is why <strong>Rust</strong> was chosen.</p>
+        <ul>
+            <li><span class="highlight">Core Framework:</span> <strong>Tauri (Rust)</strong>. Tauri acts as the
+                protective bridge, allowing the frontend to render elegantly via the OS's native webview component while
+                the Rust backend handles intensive processing safely in the background.</li>
+            <li><span class="highlight">Hardware Interface:</span> The Rust backend natively communicates with COM ports
+                utilizing robust internal serial packages, establishing the critical handshake protocol
+                (<code>*...#</code> raw datastream interpretation) from your AirGauge systems.</li>
+            <li><span class="highlight">Language Profile:</span> Rust provides unparalleled memory safety without a
+                garbage collector, ensuring that serial monitoring can run uninterrupted for infinite durations without
+                memory leaks crashing the application.</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>3. The Database (Storage & Persistence)</h2>
+        <p>We implemented an embedded, serverless relational database system to persistently store all collected data
+            without requiring users to configure external database installations.</p>
+        <ul>
+            <li><span class="highlight">Engine:</span> <strong>SQLite</strong>.</li>
+            <li><span class="highlight">Transaction Management:</span> Driven via Rust bindings (`rusqlite`). Allows
+                multi-batch ingestion scaling (e.g., the recent robust "Offline USB Upload" workflow) utilizing
+                ACID-compliant transactional SQL `BEGIN` and `COMMIT` queries.</li>
+            <li><span class="highlight">Location Schema:</span> Keeps an embedded `.sqlite` local database file tied
+                securely inside the application context isolated for offline access globally.</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>4. Summary of Tech Choice Benefits</h2>
+        <ul>
+            <li><strong>Blazingly Fast:</strong> Using Tauri + Rust rather than Electron removes NodeJS background
+                overhead, slashing memory consumption and resulting in a tiny application bundle (<10 MB).</li>
+            <li><strong>Responsive Visuals:</strong> Opting for Vanilla JS and DOM navigation means near-instant
+                rendering speeds while providing granular chart functionality.</li>
+            <li><strong>Highly Secure:</strong> No arbitrary system access is permitted to the HTML side. All external
+                reads/writes go specifically through authorized Rust endpoints (`invoke_handlers`).</li>
+        </ul>
+    </div>
+
+    <div class="footer">
+        Generated securely via antigravity.
+    </div>
+
+</body>
+
+</html>

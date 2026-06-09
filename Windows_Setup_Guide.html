@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cherry Precision App – Windows Setup Guide</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Fira+Code:wght@400;500&display=swap');
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f9fafb;
+            color: #1e293b;
+            padding: 40px 60px;
+            max-width: 900px;
+            margin: 0 auto;
+            font-size: 14px;
+            line-height: 1.7;
+        }
+
+        /* ── Header ── */
+        .header {
+            background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+            color: white;
+            border-radius: 16px;
+            padding: 36px 40px;
+            margin-bottom: 36px;
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .header-icon {
+            font-size: 52px;
+            line-height: 1;
+        }
+
+        .header h1 {
+            font-size: 26px;
+            font-weight: 800;
+            margin-bottom: 4px;
+        }
+
+        .header p {
+            font-size: 13px;
+            opacity: 0.85;
+        }
+
+        .badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 2px 12px;
+            font-size: 11px;
+            font-weight: 600;
+            margin-top: 8px;
+            letter-spacing: 0.5px;
+        }
+
+        /* ── Section ── */
+        .step {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.07);
+            padding: 24px 28px;
+            margin-bottom: 20px;
+            border-left: 5px solid #dc2626;
+            page-break-inside: avoid;
+        }
+
+        .step-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 14px;
+        }
+
+        .step-num {
+            background: #dc2626;
+            color: white;
+            font-size: 14px;
+            font-weight: 800;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .step h2 {
+            font-size: 16px;
+            font-weight: 700;
+            color: #0f172a;
+        }
+
+        .step p,
+        .step li {
+            color: #475569;
+            font-size: 13.5px;
+        }
+
+        .step ol,
+        .step ul {
+            padding-left: 20px;
+            margin-top: 8px;
+        }
+
+        .step li {
+            margin-bottom: 4px;
+        }
+
+        /* ── Code ── */
+        pre {
+            background: #0f172a;
+            color: #e2e8f0;
+            font-family: 'Fira Code', monospace;
+            font-size: 13px;
+            border-radius: 8px;
+            padding: 14px 18px;
+            margin: 12px 0;
+            overflow-x: auto;
+            letter-spacing: 0.3px;
+        }
+
+        code {
+            font-family: 'Fira Code', monospace;
+            background: #f1f5f9;
+            color: #dc2626;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 12.5px;
+        }
+
+        /* ── Info boxes ── */
+        .note {
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            border-radius: 8px;
+            padding: 12px 16px;
+            margin-top: 12px;
+            color: #166534;
+            font-size: 13px;
+        }
+
+        .warning {
+            background: #fff7ed;
+            border: 1px solid #fed7aa;
+            border-radius: 8px;
+            padding: 12px 16px;
+            margin-top: 12px;
+            color: #9a3412;
+            font-size: 13px;
+        }
+
+        .note::before {
+            content: "✅ ";
+            font-weight: 700;
+        }
+
+        .warning::before {
+            content: "⚠️ ";
+            font-weight: 700;
+        }
+
+        /* ── Final box ── */
+        .final-box {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: white;
+            border-radius: 12px;
+            padding: 28px 32px;
+            margin-top: 8px;
+            page-break-inside: avoid;
+        }
+
+        .final-box h2 {
+            font-size: 18px;
+            font-weight: 800;
+            margin-bottom: 16px;
+        }
+
+        .cmd-block {
+            background: rgba(255, 255, 255, 0.07);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 8px;
+            padding: 14px 18px;
+            font-family: 'Fira Code', monospace;
+            font-size: 13px;
+            color: #86efac;
+            margin-bottom: 10px;
+        }
+
+        .cmd-block .comment {
+            color: #94a3b8;
+            font-size: 12px;
+        }
+
+        /* ── Footer ── */
+        .footer {
+            text-align: center;
+            color: #94a3b8;
+            font-size: 12px;
+            margin-top: 32px;
+            padding-top: 20px;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .footer strong {
+            color: #dc2626;
+        }
+
+        /* ── Print ── */
+        @media print {
+            body {
+                background: white;
+                padding: 20px 30px;
+            }
+
+            .step {
+                box-shadow: none;
+                border: 1px solid #e2e8f0;
+            }
+
+            pre {
+                border: 1px solid #334155;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <div class="header">
+        <div class="header-icon">🍒</div>
+        <div>
+            <h1>Cherry Precision App</h1>
+            <p>Complete Windows Installation &amp; Setup Guide</p>
+            <span class="badge">Tauri v2 · Node.js · Rust · Windows 10/11</span>
+        </div>
+    </div>
+
+    <!-- STEP 1 -->
+    <div class="step">
+        <div class="step-header">
+            <div class="step-num">1</div>
+            <h2>Install Node.js (LTS)</h2>
+        </div>
+        <ol>
+            <li>Go to <strong>https://nodejs.org</strong></li>
+            <li>Download the <strong>LTS</strong> version (recommended for most users)</li>
+            <li>Run the <code>.msi</code> installer → keep all defaults → click <strong>Next</strong> until done</li>
+            <li>Open <strong>Command Prompt</strong> and verify:</li>
+        </ol>
+        <pre>node -v
+npm -v</pre>
+        <div class="note">Both commands should print version numbers (e.g., v22.x.x and 10.x.x)</div>
+    </div>
+
+    <!-- STEP 2 -->
+    <div class="step">
+        <div class="step-header">
+            <div class="step-num">2</div>
+            <h2>Install Rust</h2>
+        </div>
+        <ol>
+            <li>Go to <strong>https://rustup.rs</strong></li>
+            <li>Download and run <code>rustup-init.exe</code></li>
+            <li>When prompted, press <strong>1</strong> (Proceed with standard installation)</li>
+            <li><strong>Close and reopen</strong> Command Prompt after it finishes</li>
+            <li>Verify:</li>
+        </ol>
+        <pre>rustc -V
+cargo -V</pre>
+        <div class="note">You should see version numbers like <em>rustc 1.87.0</em> and <em>cargo 1.87.0</em></div>
+    </div>
+
+    <!-- STEP 3 -->
+    <div class="step">
+        <div class="step-header">
+            <div class="step-num">3</div>
+            <h2>Install Microsoft C++ Build Tools</h2>
+        </div>
+        <ol>
+            <li>Go to:<br /><strong>https://visualstudio.microsoft.com/visual-cpp-build-tools/</strong></li>
+            <li>Download and run <strong>"Build Tools for Visual Studio"</strong></li>
+            <li>In the installer, check <strong>"Desktop development with C++"</strong></li>
+            <li>Click <strong>Install</strong> and wait (downloads ~5 GB — takes 10–20 minutes)</li>
+        </ol>
+        <div class="warning">This step is required for Rust to compile native code. Do not skip it.</div>
+    </div>
+
+    <!-- STEP 4 -->
+    <div class="step">
+        <div class="step-header">
+            <div class="step-num">4</div>
+            <h2>Install WebView2 (if needed)</h2>
+        </div>
+        <p>WebView2 is <strong>pre-installed on Windows 10/11</strong>. Skip this step unless you get an error.</p>
+        <ol>
+            <li>Go to: <strong>https://developer.microsoft.com/en-us/microsoft-edge/webview2/</strong></li>
+            <li>Download and run the <strong>Evergreen Bootstrapper</strong></li>
+        </ol>
+        <div class="note">Windows 11 always has WebView2. Most up-to-date Windows 10 machines also have it.</div>
+    </div>
+
+    <!-- STEP 5 -->
+    <div class="step">
+        <div class="step-header">
+            <div class="step-num">5</div>
+            <h2>Copy the Project to Windows</h2>
+        </div>
+        <p>Transfer the entire <code>cherry-precision-app</code> folder to your Windows machine using:</p>
+        <ul>
+            <li>USB drive / External storage</li>
+            <li>ZIP file over email or cloud (Google Drive, OneDrive)</li>
+            <li>Git clone (if project is on a Git remote)</li>
+        </ul>
+        <div class="note">Make sure the entire folder is transferred including <code>src-tauri/</code> and
+            <code>src/</code> subfolders.</div>
+    </div>
+
+    <!-- FINAL RUN COMMANDS -->
+    <div class="final-box">
+        <h2>🚀 Run the App</h2>
+        <p style="color:#94a3b8; font-size:13px; margin-bottom:16px;">
+            Open <strong>Command Prompt</strong> or <strong>PowerShell</strong>, navigate to the project folder, then
+            run:
+        </p>
+
+        <div class="cmd-block">
+            <div class="comment"># Navigate to the project folder</div>
+            cd path\to\cherry-precision-app
+        </div>
+
+        <div class="cmd-block">
+            <div class="comment"># Install dependencies (first time only)</div>
+            npm install
+        </div>
+
+        <div class="cmd-block">
+            <div class="comment"># Launch the app in development mode</div>
+            npm run tauri dev
+        </div>
+
+        <div
+            style="background:rgba(255,255,255,0.05); border-radius:8px; padding:14px 18px; margin-top:12px; font-size:13px; color:#cbd5e1;">
+            ⏱️ <strong style="color:white;">First run takes 5–10 minutes</strong> while Rust compiles everything.<br />
+            Subsequent runs start in under 30 seconds.
+        </div>
+
+        <div
+            style="margin-top:20px; color:#94a3b8; font-size:13px; border-top:1px solid rgba(255,255,255,0.08); padding-top:16px;">
+            <strong style="color:#f8fafc;">📦 Optional — Build Installer (.exe / .msi)</strong><br /><br />
+            <div class="cmd-block" style="margin-top:8px;">npm run tauri build</div>
+            Output will be in: <code
+                style="background:rgba(255,255,255,0.08); color:#86efac;">src-tauri\target\release\bundle\</code>
+        </div>
+    </div>
+
+    <!-- TROUBLESHOOTING -->
+    <div class="step" style="border-left-color: #f59e0b; margin-top:20px;">
+        <div class="step-header">
+            <div class="step-num" style="background:#f59e0b;">💡</div>
+            <h2>Troubleshooting</h2>
+        </div>
+        <ul>
+            <li><strong>Rust/Cargo errors?</strong> Run <code>rustup update</code> then try again</li>
+            <li><strong>"npm not found"?</strong> Restart your PC after installing Node.js</li>
+            <li><strong>Build Tools error?</strong> Make sure "Desktop development with C++" was checked</li>
+            <li><strong>App window is blank?</strong> Check if WebView2 is installed correctly</li>
+        </ul>
+    </div>
+
+    <!-- FOOTER -->
+    <div class="footer">
+        <strong>Cherry Precision App</strong> &nbsp;·&nbsp; Windows Setup Guide &nbsp;·&nbsp; Generated May 2026
+    </div>
+
+</body>
+
+</html>
