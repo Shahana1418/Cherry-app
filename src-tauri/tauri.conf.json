@@ -36,15 +36,11 @@
     "windows": {
       "webviewInstallMode": {
         "type": "embedBootstrapper"
+      },
+      "nsis": {
+        "installerIcon": "icons/icon.ico",
+        "installMode": "currentUser"
       }
-    },
-    "nsis": {
-      "oneClick": false,
-      "allowElevation": true,
-      "installerIcon": "icons/icon.ico",
-      "uninstallerIcon": "icons/icon.ico",
-      "displayLanguageSelector": false,
-      "installMode": "currentUser"
     }
   }
 }
