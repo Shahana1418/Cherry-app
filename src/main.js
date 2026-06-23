@@ -2346,69 +2346,45 @@ document.addEventListener('DOMContentLoaded', async () => {
     const ctx = canvas.getContext('2d');
     const dpr = window.devicePixelRatio || 1;
 
-    // Read data to calculate dynamic width
     const pts = chart.readings || [];
-    const pxPerStep = 60; // 60 pixels width per data point
+    const pxPerStep = 60;
 
-    // Size canvas properly
     const rect = canvas.parentElement.getBoundingClientRect();
-    const minW = rect.width - 48; // padding (24 left + 24 right)
-    const requiredDataWidth = 65 + 20 + (pts.length * pxPerStep); // margin.left + margin.right + data space
+    const minW = rect.width - 48;
+    const requiredDataWidth = 65 + 20 + (pts.length * pxPerStep);
     const w = Math.max(minW, requiredDataWidth);
 
-    // Auto-scroll to the right so new data is instantly visible
     const wrap = canvas.closest('.rc-canvas-wrap');
     if (wrap && canvas.width !== (w * (window.devicePixelRatio || 1))) {
-      // Only snap scroll if the canvas actually grew larger to fit new data
       setTimeout(() => wrap.scrollLeft = wrap.scrollWidth, 0);
     }
 
-    const h = 220;
+    const h = 240;
     canvas.width = w * dpr;
     canvas.height = h * dpr;
     canvas.style.width = w + 'px';
     canvas.style.height = h + 'px';
     ctx.scale(dpr, dpr);
 
-    // Parse values
     const highTol = parseFloat(cfg.highTol) || 0;
     const drawing = parseFloat(cfg.drawing) || 0;
     const lowTol = parseFloat(cfg.lowTol) || 0;
     const isShaft = (cfg.type || '').toLowerCase() === 'shaft';
 
-    // Colors based on type
-    // Hole: High=Red, Drawing=Green, Low=Orange
-    // Shaft: High=Orange, Drawing=Green, Low=Red
-    const COLOR_RED = '#ef4444';      // Red
-    const COLOR_GREEN = '#22c55e';    // Green
-    const COLOR_ORANGE = '#f59e0b';   // Orange (using amber/orange to be visible)
+    // ── Neon colour palette ──
+    const NEON_HIGH = isShaft ? '#f59e0b' : '#f43f5e';   // amber / rose
+    const NEON_DRAW = '#10b981';                           // emerald
+    const NEON_LOW = isShaft ? '#f43f5e' : '#f59e0b';   // rose / amber
+    const NEON_LINE = '#38bdf8';                           // sky-blue data line
 
-    let colorHigh, colorDraw, colorLow;
-    if (isShaft) {
-      colorHigh = COLOR_ORANGE;
-      colorDraw = COLOR_GREEN;
-      colorLow = COLOR_RED;
-    } else {
-      colorHigh = COLOR_RED;
-      colorDraw = COLOR_GREEN;
-      colorLow = COLOR_ORANGE;
-    }
-
-    // Chart area with margins
-    const margin = { top: 20, right: 20, bottom: 35, left: 65 };
+    const margin = { top: 24, right: 24, bottom: 38, left: 70 };
     const cw = w - margin.left - margin.right;
     const ch = h - margin.top - margin.bottom;
 
-    // Compute Y range
     let vals = [highTol, drawing, lowTol].filter(v => v !== 0);
-
-    if (pts.length > 0) {
-      vals = vals.concat(pts.map(p => p.reading));
-    }
-
+    if (pts.length > 0) vals = vals.concat(pts.map(p => p.reading));
     if (vals.length === 0) {
-      // No data — draw placeholder
-      ctx.fillStyle = 'rgba(255,255,255,0.15)';
+      ctx.fillStyle = 'rgba(255,255,255,0.12)';
       ctx.font = '13px Outfit, sans-serif';
       ctx.textAlign = 'center';
       ctx.fillText('No tolerance values configured', w / 2, h / 2);
@@ -2417,144 +2393,292 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     const yMin = Math.min(...vals);
     const yMax = Math.max(...vals);
-    const yPadding = (yMax - yMin) * 0.35 || 1;
+    const yPadding = (yMax - yMin) * 0.38 || 1;
     const yStart = yMin - yPadding;
     const yEnd = yMax + yPadding;
-
-    // Map Y value to pixel
     const yToPixel = (val) => margin.top + ch - ((val - yStart) / (yEnd - yStart)) * ch;
 
-    // Display ALL points extending infinitely
-    const visiblePts = pts;
-
-    // Map X value (index) to pixel using absolute pixels per step
-    const xToPixel = (i) => {
-      // If pts.length < 10, we span across the minimum width. 
-      // Otherwise we use absolute pxPerStep.
-      const intervals = Math.max(10, pts.length);
-      return margin.left + (i / intervals) * cw;
-    };
-
+    const intervals = Math.max(10, pts.length);
+    const xToPixel = (i) => margin.left + (i / intervals) * cw;
     const maxVal = Math.max(10, pts.length);
-    const xSteps = Math.floor(maxVal / 2); // Steps for 0, 2, 4, 6, 8...
+    const xSteps = Math.floor(maxVal / 2);
 
-    // ── Background ──
-    ctx.fillStyle = '#111827'; // Darker gray-blue to match new app theme
+    // ── 1. Background: deep gradient ──
+    const bgGrad = ctx.createLinearGradient(0, 0, 0, h);
+    bgGrad.addColorStop(0, '#0d1117');
+    bgGrad.addColorStop(1, '#0f172a');
+    ctx.fillStyle = bgGrad;
     ctx.fillRect(0, 0, w, h);
 
-    // ── Shaded bands ──
+    // ── 2. Frosted tolerance bands ──
     const yHigh = yToPixel(Math.max(highTol, lowTol));
     const yLow = yToPixel(Math.min(highTol, lowTol));
 
-    // Top Band (Above High Tolerance)
-    ctx.fillStyle = isShaft
-      ? 'rgba(245, 158, 11, 0.25)'   // Orange for Shaft high side
-      : 'rgba(239, 68, 68, 0.25)';   // Red for Hole high side
-    ctx.fillRect(margin.left, margin.top, cw, yHigh - margin.top);
+    // Top band (out-of-tolerance top)
+    const topBandGrad = ctx.createLinearGradient(0, margin.top, 0, yHigh);
+    if (isShaft) {
+      topBandGrad.addColorStop(0, 'rgba(245,158,11,0.22)');
+      topBandGrad.addColorStop(1, 'rgba(245,158,11,0.06)');
+    } else {
+      topBandGrad.addColorStop(0, 'rgba(244,63,94,0.22)');
+      topBandGrad.addColorStop(1, 'rgba(244,63,94,0.06)');
+    }
+    ctx.fillStyle = topBandGrad;
+    ctx.fillRect(margin.left, margin.top, cw, Math.max(0, yHigh - margin.top));
 
-    // Middle Band (Between High and Low Tolerance)
-    ctx.fillStyle = 'rgba(34, 197, 94, 0.25)'; // Green
-    ctx.fillRect(margin.left, yHigh, cw, yLow - yHigh);
+    // Middle band (in-tolerance zone) — subtle emerald glow
+    const midBandGrad = ctx.createLinearGradient(0, yHigh, 0, yLow);
+    midBandGrad.addColorStop(0, 'rgba(16,185,129,0.12)');
+    midBandGrad.addColorStop(0.5, 'rgba(16,185,129,0.20)');
+    midBandGrad.addColorStop(1, 'rgba(16,185,129,0.12)');
+    ctx.fillStyle = midBandGrad;
+    ctx.fillRect(margin.left, yHigh, cw, Math.max(0, yLow - yHigh));
 
-    // Bottom Band (Below Low Tolerance)
-    ctx.fillStyle = isShaft
-      ? 'rgba(239, 68, 68, 0.25)'    // Red for Shaft low side
-      : 'rgba(245, 158, 11, 0.25)';  // Orange for Hole low side
-    ctx.fillRect(margin.left, yLow, cw, (margin.top + ch) - yLow);
+    // Bottom band (out-of-tolerance bottom)
+    const botBandGrad = ctx.createLinearGradient(0, yLow, 0, margin.top + ch);
+    if (isShaft) {
+      botBandGrad.addColorStop(0, 'rgba(244,63,94,0.06)');
+      botBandGrad.addColorStop(1, 'rgba(244,63,94,0.22)');
+    } else {
+      botBandGrad.addColorStop(0, 'rgba(245,158,11,0.06)');
+      botBandGrad.addColorStop(1, 'rgba(245,158,11,0.22)');
+    }
+    ctx.fillStyle = botBandGrad;
+    ctx.fillRect(margin.left, yLow, cw, Math.max(0, (margin.top + ch) - yLow));
 
-    // ── Grid lines ──
-    ctx.strokeStyle = 'rgba(255,255,255,0.06)';
-    ctx.lineWidth = 1;
+    // ── 3. Subtle grid lines ──
+    ctx.save();
     for (let j = 0; j <= xSteps; j++) {
-      const val = 2 * j; // 0, 2, 4, 6, 8, 10
-      const x = xToPixel(val);
+      const x = xToPixel(2 * j);
+      const gGrad = ctx.createLinearGradient(x, margin.top, x, margin.top + ch);
+      gGrad.addColorStop(0, 'rgba(148,163,184,0)');
+      gGrad.addColorStop(0.5, 'rgba(148,163,184,0.07)');
+      gGrad.addColorStop(1, 'rgba(148,163,184,0)');
+      ctx.strokeStyle = gGrad;
+      ctx.lineWidth = 1;
       ctx.beginPath();
       ctx.moveTo(x, margin.top);
       ctx.lineTo(x, margin.top + ch);
       ctx.stroke();
     }
+    // Horizontal grid (4 lines)
+    for (let r = 0; r <= 4; r++) {
+      const y = margin.top + (ch / 4) * r;
+      const hGrad = ctx.createLinearGradient(margin.left, y, margin.left + cw, y);
+      hGrad.addColorStop(0, 'rgba(148,163,184,0)');
+      hGrad.addColorStop(0.5, 'rgba(148,163,184,0.07)');
+      hGrad.addColorStop(1, 'rgba(148,163,184,0)');
+      ctx.strokeStyle = hGrad;
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(margin.left, y);
+      ctx.lineTo(margin.left + cw, y);
+      ctx.stroke();
+    }
+    ctx.restore();
 
-    // ── Axes ──
-    ctx.strokeStyle = 'rgba(255,255,255,0.2)';
+    // ── 4. Axes (subtle glow) ──
+    ctx.strokeStyle = 'rgba(99,115,145,0.5)';
     ctx.lineWidth = 1;
-    // Y axis
     ctx.beginPath();
     ctx.moveTo(margin.left, margin.top);
     ctx.lineTo(margin.left, margin.top + ch);
     ctx.stroke();
-    // X axis
     ctx.beginPath();
     ctx.moveTo(margin.left, margin.top + ch);
     ctx.lineTo(margin.left + cw, margin.top + ch);
     ctx.stroke();
 
     // X axis labels
-    ctx.fillStyle = 'rgba(255,255,255,0.6)';
-    ctx.font = '11px Outfit, sans-serif';
+    ctx.fillStyle = 'rgba(148,163,184,0.75)';
+    ctx.font = '10px Outfit, sans-serif';
     ctx.textAlign = 'center';
     for (let j = 0; j <= xSteps; j++) {
-      const val = 2 * j; // 0, 2, 4, 6, 8, 10
+      const val = 2 * j;
       const x = xToPixel(val);
       ctx.fillText(val.toString(), x, margin.top + ch + 16);
     }
+    ctx.fillStyle = 'rgba(100,116,139,0.6)';
+    ctx.font = '10px Outfit, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('Sample #', margin.left + cw / 2, margin.top + ch + 30);
 
-    // ── Tolerance lines (dashed) ──
-    function drawDashedLine(yVal, color) {
+    // ── 5. Neon tolerance reference lines ──
+    function drawNeonLine(yVal, color, label) {
       const y = yToPixel(yVal);
+
+      // Glow behind the dashed line
       ctx.save();
-      ctx.setLineDash([6, 4]);
+      ctx.shadowBlur = 10;
+      ctx.shadowColor = color;
+      ctx.setLineDash([8, 5]);
       ctx.strokeStyle = color;
-      ctx.lineWidth = 2;
+      ctx.lineWidth = 1.5;
+      ctx.globalAlpha = 0.85;
       ctx.beginPath();
       ctx.moveTo(margin.left, y);
       ctx.lineTo(margin.left + cw, y);
       ctx.stroke();
       ctx.restore();
 
-      // Y-axis label
+      // Y label pill
+      const txt = yVal.toFixed(3);
+      const txtW = ctx.measureText(txt).width + 10;
+      const pillX = margin.left - 8 - txtW;
+      const pillH = 16;
+      const pillY = y - pillH / 2;
+
+      ctx.save();
+      ctx.fillStyle = color + '22';
+      const pillR = 4;
+      ctx.beginPath();
+      ctx.moveTo(pillX + pillR, pillY);
+      ctx.lineTo(pillX + txtW - pillR, pillY);
+      ctx.quadraticCurveTo(pillX + txtW, pillY, pillX + txtW, pillY + pillR);
+      ctx.lineTo(pillX + txtW, pillY + pillH - pillR);
+      ctx.quadraticCurveTo(pillX + txtW, pillY + pillH, pillX + txtW - pillR, pillY + pillH);
+      ctx.lineTo(pillX + pillR, pillY + pillH);
+      ctx.quadraticCurveTo(pillX, pillY + pillH, pillX, pillY + pillH - pillR);
+      ctx.lineTo(pillX, pillY + pillR);
+      ctx.quadraticCurveTo(pillX, pillY, pillX + pillR, pillY);
+      ctx.closePath();
+      ctx.fill();
+      ctx.restore();
+
       ctx.fillStyle = color;
-      ctx.font = 'bold 11px Outfit, sans-serif';
-      ctx.textAlign = 'right';
-      ctx.fillText(yVal.toFixed(3), margin.left - 8, y + 4);
+      ctx.font = 'bold 10px Outfit, monospace';
+      ctx.textAlign = 'center';
+      ctx.fillText(txt, pillX + txtW / 2, y + 4);
     }
 
-    drawDashedLine(highTol, colorHigh);
-    drawDashedLine(drawing, colorDraw);
-    drawDashedLine(lowTol, colorLow);
+    drawNeonLine(highTol, NEON_HIGH, 'H');
+    drawNeonLine(drawing, NEON_DRAW, 'D');
+    drawNeonLine(lowTol, NEON_LOW, 'L');
 
-    // ── Live Readings (Line plot) ──
-    if (visiblePts.length > 0) {
-      // Clip rendering exclusively inside the box bands so outliers don't visually bleed
+    // ── 6. Data line: smooth bezier + under-fill gradient ──
+    if (pts.length > 0) {
       ctx.save();
       ctx.beginPath();
       ctx.rect(margin.left, margin.top, cw, ch);
       ctx.clip();
 
-      ctx.beginPath();
-      ctx.strokeStyle = '#38bdf8'; // bright blue
-      ctx.lineWidth = 2;
-      ctx.lineJoin = 'round';
-
-      visiblePts.forEach((pt, i) => {
-        const trueXIndex = (pt.count - 1); // Real index from 0 to N
-        const x = xToPixel(trueXIndex);
-        const y = yToPixel(pt.reading);
-        // Only start drawing on the first visible point
-        if (i === 0) ctx.moveTo(x, y);
-        else ctx.lineTo(x, y);
+      const getXY = (pt) => ({
+        x: xToPixel(pt.count - 1),
+        y: yToPixel(pt.reading)
       });
+
+      // Under-line fill gradient
+      ctx.beginPath();
+      const first = getXY(pts[0]);
+      ctx.moveTo(first.x, margin.top + ch); // start at baseline
+      ctx.lineTo(first.x, first.y);
+
+      for (let i = 1; i < pts.length; i++) {
+        const prev = getXY(pts[i - 1]);
+        const curr = getXY(pts[i]);
+        const cpx = (prev.x + curr.x) / 2;
+        ctx.bezierCurveTo(cpx, prev.y, cpx, curr.y, curr.x, curr.y);
+      }
+
+      const last = getXY(pts[pts.length - 1]);
+      ctx.lineTo(last.x, margin.top + ch);
+      ctx.closePath();
+
+      const fillGrad = ctx.createLinearGradient(0, margin.top, 0, margin.top + ch);
+      fillGrad.addColorStop(0, 'rgba(56,189,248,0.28)');
+      fillGrad.addColorStop(0.5, 'rgba(56,189,248,0.12)');
+      fillGrad.addColorStop(1, 'rgba(56,189,248,0.00)');
+      ctx.fillStyle = fillGrad;
+      ctx.fill();
+
+      // Glowing data line
+      ctx.beginPath();
+      ctx.moveTo(first.x, first.y);
+      for (let i = 1; i < pts.length; i++) {
+        const prev = getXY(pts[i - 1]);
+        const curr = getXY(pts[i]);
+        const cpx = (prev.x + curr.x) / 2;
+        ctx.bezierCurveTo(cpx, prev.y, cpx, curr.y, curr.x, curr.y);
+      }
+
+      // Outer glow pass
+      ctx.save();
+      ctx.shadowBlur = 18;
+      ctx.shadowColor = NEON_LINE;
+      ctx.strokeStyle = NEON_LINE;
+      ctx.lineWidth = 3;
+      ctx.lineJoin = 'round';
+      ctx.stroke();
+      ctx.restore();
+
+      // Sharp inner line pass
+      ctx.strokeStyle = '#e0f2fe';
+      ctx.lineWidth = 1.5;
+      ctx.lineJoin = 'round';
       ctx.stroke();
 
-      // Draw circular dots over each data point
-      ctx.fillStyle = '#ffffff';
-      visiblePts.forEach((pt, i) => {
-        const trueXIndex = (pt.count - 1); // Real index from 0 to N
-        const x = xToPixel(trueXIndex);
-        const y = yToPixel(pt.reading);
+      // Glowing dots at each data point
+      pts.forEach((pt) => {
+        const { x, y } = getXY(pt);
+
+        // Outer glow ring
+        const dotGrad = ctx.createRadialGradient(x, y, 0, x, y, 9);
+        dotGrad.addColorStop(0, 'rgba(56,189,248,0.35)');
+        dotGrad.addColorStop(0.5, 'rgba(56,189,248,0.12)');
+        dotGrad.addColorStop(1, 'rgba(56,189,248,0.00)');
+        ctx.beginPath();
+        ctx.arc(x, y, 9, 0, Math.PI * 2);
+        ctx.fillStyle = dotGrad;
+        ctx.fill();
+
+        // Core dot
+        ctx.save();
+        ctx.shadowBlur = 8;
+        ctx.shadowColor = NEON_LINE;
         ctx.beginPath();
         ctx.arc(x, y, 3.5, 0, Math.PI * 2);
+        ctx.fillStyle = '#ffffff';
         ctx.fill();
+        ctx.restore();
       });
+
+      // Latest reading value badge
+      if (pts.length > 0) {
+        const { x, y } = getXY(pts[pts.length - 1]);
+        const reading = pts[pts.length - 1].reading;
+        const badgeTxt = reading.toFixed(4);
+        const bw = ctx.measureText(badgeTxt).width + 14;
+        const bh = 18;
+        const bx = Math.min(x - bw / 2, margin.left + cw - bw - 4);
+        const by = Math.max(margin.top + 4, y - bh - 10);
+
+        ctx.save();
+        ctx.shadowBlur = 12;
+        ctx.shadowColor = NEON_LINE;
+        ctx.fillStyle = '#0f172a';
+        const br = 5;
+        ctx.beginPath();
+        ctx.moveTo(bx + br, by);
+        ctx.lineTo(bx + bw - br, by);
+        ctx.quadraticCurveTo(bx + bw, by, bx + bw, by + br);
+        ctx.lineTo(bx + bw, by + bh - br);
+        ctx.quadraticCurveTo(bx + bw, by + bh, bx + bw - br, by + bh);
+        ctx.lineTo(bx + br, by + bh);
+        ctx.quadraticCurveTo(bx, by + bh, bx, by + bh - br);
+        ctx.lineTo(bx, by + br);
+        ctx.quadraticCurveTo(bx, by, bx + br, by);
+        ctx.closePath();
+        ctx.fill();
+        ctx.strokeStyle = NEON_LINE + 'aa';
+        ctx.lineWidth = 1;
+        ctx.stroke();
+        ctx.restore();
+
+        ctx.fillStyle = NEON_LINE;
+        ctx.font = 'bold 10px Outfit, monospace';
+        ctx.textAlign = 'center';
+        ctx.fillText(badgeTxt, bx + bw / 2, by + 12);
+      }
 
       ctx.restore();
     }
