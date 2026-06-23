@@ -1,0 +1,395 @@
+build-windows	Set up job	﻿2026-06-09T17:30:51.2025383Z Current runner version: '2.334.0'
+build-windows	Set up job	2026-06-09T17:30:51.2096854Z ##[group]Runner Image Provisioner
+build-windows	Set up job	2026-06-09T17:30:51.2097713Z Hosted Compute Agent
+build-windows	Set up job	2026-06-09T17:30:51.2098266Z Version: 20260520.533
+build-windows	Set up job	2026-06-09T17:30:51.2098845Z Commit: 189110e25284a9812c124fd27b339e2fb4f2f9db
+build-windows	Set up job	2026-06-09T17:30:51.2099536Z Build Date: 2026-05-20T17:44:04Z
+build-windows	Set up job	2026-06-09T17:30:51.2100180Z Worker ID: {ba8283b8-3027-486a-9e1d-bbe2fb5ec0f5}
+build-windows	Set up job	2026-06-09T17:30:51.2100855Z Azure Region: westus3
+build-windows	Set up job	2026-06-09T17:30:51.2101406Z ##[endgroup]
+build-windows	Set up job	2026-06-09T17:30:51.2102692Z ##[group]Operating System
+build-windows	Set up job	2026-06-09T17:30:51.2103338Z Microsoft Windows Server 2025
+build-windows	Set up job	2026-06-09T17:30:51.2103896Z 10.0.26100
+build-windows	Set up job	2026-06-09T17:30:51.2104373Z Datacenter
+build-windows	Set up job	2026-06-09T17:30:51.2104848Z ##[endgroup]
+build-windows	Set up job	2026-06-09T17:30:51.2105367Z ##[group]Runner Image
+build-windows	Set up job	2026-06-09T17:30:51.2105913Z Image: windows-2025
+build-windows	Set up job	2026-06-09T17:30:51.2106421Z Version: 20260525.149.1
+build-windows	Set up job	2026-06-09T17:30:51.2107415Z Included Software: https://github.com/actions/runner-images/blob/win25/20260525.149/images/windows/Windows2025-Readme.md
+build-windows	Set up job	2026-06-09T17:30:51.2109222Z Image Release: https://github.com/actions/runner-images/releases/tag/win25%2F20260525.149
+build-windows	Set up job	2026-06-09T17:30:51.2110683Z ##[endgroup]
+build-windows	Set up job	2026-06-09T17:30:51.2111690Z ##[group]GITHUB_TOKEN Permissions
+build-windows	Set up job	2026-06-09T17:30:51.2113501Z Contents: write
+build-windows	Set up job	2026-06-09T17:30:51.2114092Z Metadata: read
+build-windows	Set up job	2026-06-09T17:30:51.2114629Z ##[endgroup]
+build-windows	Set up job	2026-06-09T17:30:51.2116657Z Secret source: Actions
+build-windows	Set up job	2026-06-09T17:30:51.2117361Z Prepare workflow directory
+build-windows	Set up job	2026-06-09T17:30:51.2514181Z Prepare all required actions
+build-windows	Set up job	2026-06-09T17:30:51.2569242Z Getting action download info
+build-windows	Set up job	2026-06-09T17:30:51.8174769Z Download action repository 'actions/checkout@v4' (SHA:34e114876b0b11c390a56381ad16ebd13914f8d5)
+build-windows	Set up job	2026-06-09T17:30:51.9376964Z Download action repository 'actions/setup-node@v4' (SHA:49933ea5288caeca8642d1e84afbd3f7d6820020)
+build-windows	Set up job	2026-06-09T17:30:52.1041048Z Download action repository 'dtolnay/rust-toolchain@stable' (SHA:29eef336d9b2848a0b548edc03f92a220660cdb8)
+build-windows	Set up job	2026-06-09T17:30:52.3786358Z Download action repository 'Swatinem/rust-cache@v2' (SHA:e18b497796c12c097a38f9edb9d0641fb99eee32)
+build-windows	Set up job	2026-06-09T17:30:53.1977019Z Download action repository 'actions/upload-artifact@v4' (SHA:ea165f8d65b6e75b540449e92b4886f43607fa02)
+build-windows	Set up job	2026-06-09T17:30:53.6061192Z Complete job name: build-windows
+build-windows	Checkout repository	﻿2026-06-09T17:30:53.7342707Z ##[group]Run actions/checkout@v4
+build-windows	Checkout repository	2026-06-09T17:30:53.7344519Z with:
+build-windows	Checkout repository	2026-06-09T17:30:53.7345550Z   repository: Shahana1418/Cherry-app
+build-windows	Checkout repository	2026-06-09T17:30:53.7355193Z   token: ***
+build-windows	Checkout repository	2026-06-09T17:30:53.7356009Z   ssh-strict: true
+build-windows	Checkout repository	2026-06-09T17:30:53.7356822Z   ssh-user: git
+build-windows	Checkout repository	2026-06-09T17:30:53.7357664Z   persist-credentials: true
+build-windows	Checkout repository	2026-06-09T17:30:53.7358579Z   clean: true
+build-windows	Checkout repository	2026-06-09T17:30:53.7359426Z   sparse-checkout-cone-mode: true
+build-windows	Checkout repository	2026-06-09T17:30:53.7360408Z   fetch-depth: 1
+build-windows	Checkout repository	2026-06-09T17:30:53.7361430Z   fetch-tags: false
+build-windows	Checkout repository	2026-06-09T17:30:53.7362264Z   show-progress: true
+build-windows	Checkout repository	2026-06-09T17:30:53.7363096Z   lfs: false
+build-windows	Checkout repository	2026-06-09T17:30:53.7363877Z   submodules: false
+build-windows	Checkout repository	2026-06-09T17:30:53.7364747Z   set-safe-directory: true
+build-windows	Checkout repository	2026-06-09T17:30:53.7365974Z ##[endgroup]
+build-windows	Checkout repository	2026-06-09T17:30:53.9103257Z Syncing repository: Shahana1418/Cherry-app
+build-windows	Checkout repository	2026-06-09T17:30:53.9106738Z ##[group]Getting Git version info
+build-windows	Checkout repository	2026-06-09T17:30:53.9108690Z Working directory is 'D:\a\Cherry-app\Cherry-app'
+build-windows	Checkout repository	2026-06-09T17:30:53.9971599Z [command]"C:\Program Files\Git\bin\git.exe" version
+build-windows	Checkout repository	2026-06-09T17:30:54.1823608Z git version 2.54.0.windows.1
+build-windows	Checkout repository	2026-06-09T17:30:54.1895345Z ##[endgroup]
+build-windows	Checkout repository	2026-06-09T17:30:54.1958699Z Temporarily overriding HOME='D:\a\_temp\1e31a84a-6828-4835-ac60-6c65af13af93' before making global git config changes
+build-windows	Checkout repository	2026-06-09T17:30:54.1969354Z Adding repository directory to the temporary git global config as a safe directory
+build-windows	Checkout repository	2026-06-09T17:30:54.1989613Z [command]"C:\Program Files\Git\bin\git.exe" config --global --add safe.directory D:\a\Cherry-app\Cherry-app
+build-windows	Checkout repository	2026-06-09T17:30:54.2438950Z Deleting the contents of 'D:\a\Cherry-app\Cherry-app'
+build-windows	Checkout repository	2026-06-09T17:30:54.2445827Z ##[group]Initializing the repository
+build-windows	Checkout repository	2026-06-09T17:30:54.2456378Z [command]"C:\Program Files\Git\bin\git.exe" init D:\a\Cherry-app\Cherry-app
+build-windows	Checkout repository	2026-06-09T17:30:54.2945946Z Initialized empty Git repository in D:/a/Cherry-app/Cherry-app/.git/
+build-windows	Checkout repository	2026-06-09T17:30:54.3003135Z [command]"C:\Program Files\Git\bin\git.exe" remote add origin https://github.com/Shahana1418/Cherry-app
+build-windows	Checkout repository	2026-06-09T17:30:54.3360127Z ##[endgroup]
+build-windows	Checkout repository	2026-06-09T17:30:54.3361686Z ##[group]Disabling automatic garbage collection
+build-windows	Checkout repository	2026-06-09T17:30:54.3370131Z [command]"C:\Program Files\Git\bin\git.exe" config --local gc.auto 0
+build-windows	Checkout repository	2026-06-09T17:30:54.3655263Z ##[endgroup]
+build-windows	Checkout repository	2026-06-09T17:30:54.3656754Z ##[group]Setting up auth
+build-windows	Checkout repository	2026-06-09T17:30:54.3669288Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp core\.sshCommand
+build-windows	Checkout repository	2026-06-09T17:30:54.3965162Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :\""
+build-windows	Checkout repository	2026-06-09T17:30:55.5432915Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+build-windows	Checkout repository	2026-06-09T17:30:55.5789933Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :\""
+build-windows	Checkout repository	2026-06-09T17:30:56.1080738Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp ^includeIf\.gitdir:
+build-windows	Checkout repository	2026-06-09T17:30:56.1389914Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "git config --local --show-origin --name-only --get-regexp remote.origin.url"
+build-windows	Checkout repository	2026-06-09T17:30:56.6744732Z [command]"C:\Program Files\Git\bin\git.exe" config --local http.https://github.com/.extraheader "AUTHORIZATION: basic ***"
+build-windows	Checkout repository	2026-06-09T17:30:56.7045509Z ##[endgroup]
+build-windows	Checkout repository	2026-06-09T17:30:56.7046212Z ##[group]Fetching the repository
+build-windows	Checkout repository	2026-06-09T17:30:56.7060666Z [command]"C:\Program Files\Git\bin\git.exe" -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +0363d6b8e80cead30971721059954b0dc5aea021:refs/remotes/origin/master
+build-windows	Checkout repository	2026-06-09T17:30:58.0463193Z From https://github.com/Shahana1418/Cherry-app
+build-windows	Checkout repository	2026-06-09T17:30:58.0466260Z  * [new ref]         0363d6b8e80cead30971721059954b0dc5aea021 -> origin/master
+build-windows	Checkout repository	2026-06-09T17:30:58.0852989Z ##[endgroup]
+build-windows	Checkout repository	2026-06-09T17:30:58.0853570Z ##[group]Determining the checkout info
+build-windows	Checkout repository	2026-06-09T17:30:58.0855491Z ##[endgroup]
+build-windows	Checkout repository	2026-06-09T17:30:58.0869688Z [command]"C:\Program Files\Git\bin\git.exe" sparse-checkout disable
+build-windows	Checkout repository	2026-06-09T17:30:58.1229345Z [command]"C:\Program Files\Git\bin\git.exe" config --local --unset-all extensions.worktreeConfig
+build-windows	Checkout repository	2026-06-09T17:30:58.1531663Z ##[group]Checking out the ref
+build-windows	Checkout repository	2026-06-09T17:30:58.1546460Z [command]"C:\Program Files\Git\bin\git.exe" checkout --progress --force -B master refs/remotes/origin/master
+build-windows	Checkout repository	2026-06-09T17:30:58.2435143Z Reset branch 'master'
+build-windows	Checkout repository	2026-06-09T17:30:58.2457975Z branch 'master' set up to track 'origin/master'.
+build-windows	Checkout repository	2026-06-09T17:30:58.2507940Z ##[endgroup]
+build-windows	Checkout repository	2026-06-09T17:30:58.2833231Z [command]"C:\Program Files\Git\bin\git.exe" log -1 --format=%H
+build-windows	Checkout repository	2026-06-09T17:30:58.3105557Z 0363d6b8e80cead30971721059954b0dc5aea021
+build-windows	Setup Node.js	﻿2026-06-09T17:30:58.3533953Z ##[group]Run actions/setup-node@v4
+build-windows	Setup Node.js	2026-06-09T17:30:58.3534343Z with:
+build-windows	Setup Node.js	2026-06-09T17:30:58.3534537Z   node-version: 20
+build-windows	Setup Node.js	2026-06-09T17:30:58.3534765Z   always-auth: false
+build-windows	Setup Node.js	2026-06-09T17:30:58.3534974Z   check-latest: false
+build-windows	Setup Node.js	2026-06-09T17:30:58.3538203Z   token: ***
+build-windows	Setup Node.js	2026-06-09T17:30:58.3538420Z ##[endgroup]
+build-windows	Setup Node.js	2026-06-09T17:30:58.5915304Z Attempting to download 20...
+build-windows	Setup Node.js	2026-06-09T17:30:59.7076353Z Acquiring 20.20.2 - x64 from https://github.com/actions/node-versions/releases/download/20.20.2-23521894959/node-20.20.2-win32-x64.7z
+build-windows	Setup Node.js	2026-06-09T17:31:00.1973303Z Extracting ...
+build-windows	Setup Node.js	2026-06-09T17:31:02.4397900Z Adding to the cache ...
+build-windows	Setup Node.js	2026-06-09T17:31:06.1643386Z ##[group]Environment details
+build-windows	Setup Node.js	2026-06-09T17:31:07.3054540Z node: v20.20.2
+build-windows	Setup Node.js	2026-06-09T17:31:07.3054852Z npm: 10.8.2
+build-windows	Setup Node.js	2026-06-09T17:31:07.3055027Z yarn: 1.22.22
+build-windows	Setup Node.js	2026-06-09T17:31:07.3055726Z ##[endgroup]
+build-windows	Setup Rust	﻿2026-06-09T17:31:07.3495922Z ##[group]Run dtolnay/rust-toolchain@stable
+build-windows	Setup Rust	2026-06-09T17:31:07.3496300Z with:
+build-windows	Setup Rust	2026-06-09T17:31:07.3496494Z   toolchain: stable
+build-windows	Setup Rust	2026-06-09T17:31:07.3496709Z ##[endgroup]
+build-windows	Setup Rust	2026-06-09T17:31:07.3714594Z ##[group]Run : parse toolchain version
+build-windows	Setup Rust	2026-06-09T17:31:07.3714966Z [36;1m: parse toolchain version[0m
+build-windows	Setup Rust	2026-06-09T17:31:07.3715246Z [36;1mif [[ -z $toolchain ]]; then[0m
+build-windows	Setup Rust	2026-06-09T17:31:07.3715766Z [36;1m  # GitHub does not enforce `required: true` inputs itself. https://github.com/actions/runner/issues/1070[0m
+build-windows	Setup Rust	2026-06-09T17:31:07.3716320Z [36;1m  echo "'toolchain' is a required input" >&2[0m
+build-windows	Setup Rust	2026-06-09T17:31:07.3716603Z [36;1m  exit 1[0m
+build-windows	Setup Rust	2026-06-09T17:31:07.3716922Z [36;1melif [[ $toolchain =~ ^stable' '[0-9]+' '(year|month|week|day)s?' 'ago$ ]]; then[0m
+build-windows	Setup Rust	2026-06-09T17:31:07.3717360Z [36;1m  if [[ Windows == macOS ]]; then[0m
+build-windows	Setup Rust	2026-06-09T17:31:07.3717884Z [36;1m    echo "toolchain=1.$((($(date -v-$(sed 's/stable \([0-9]*\) \(.\).*/\1\2/' <<< $toolchain) +%s)/60/60/24-16569)/7/6))" >> $GITHUB_OUTPUT[0m
+build-windows	Setup Rust	2026-06-09T17:31:07.3718417Z [36;1m  else[0m
+build-windows	Setup Rust	2026-06-09T17:31:07.3719203Z [36;1m    echo "toolchain=1.$((($(date --date "${toolchain#stable }" +%s)/60/60/24-16569)/7/6))" >> $GITHUB_OUTPUT[0m
+build-windows	Setup Rust	2026-06-09T17:31:07.3719714Z [36;1m  fi[0m
+build-windows	Setup Rust	2026-06-09T17:31:07.3720000Z [36;1melif [[ $toolchain =~ ^stable' 'minus' '[0-9]+' 'releases?$ ]]; then[0m
+build-windows	Setup Rust	2026-06-09T17:31:07.3720510Z [36;1m  echo "toolchain=1.$((($(date +%s)/60/60/24-16569)/7/6-${toolchain//[^0-9]/}))" >> $GITHUB_OUTPUT[0m
+build-windows	Setup Rust	2026-06-09T17:31:07.3720961Z [36;1melif [[ $toolchain =~ ^1\.[0-9]+$ ]]; then[0m
+build-windows	Setup Rust	2026-06-09T17:31:07.3721481Z [36;1m  echo "toolchain=1.$((i=${toolchain#1.}, c=($(date +%s)/60/60/24-16569)/7/6, i+9*i*(10*i<=c)+90*i*(100*i<=c)))" >> $GITHUB_OUTPUT[0m
+build-windows	Setup Rust	2026-06-09T17:31:07.3721966Z [36;1melse[0m
+build-windows	Setup Rust	2026-06-09T17:31:07.3722193Z [36;1m  echo "toolchain=$toolchain" >> $GITHUB_OUTPUT[0m
+build-windows	Setup Rust	2026-06-09T17:31:07.3722475Z [36;1mfi[0m
+build-windows	Setup Rust	2026-06-09T17:31:07.3739653Z shell: C:\Program Files\Git\bin\bash.EXE --noprofile --norc -e -o pipefail {0}
+build-windows	Setup Rust	2026-06-09T17:31:07.3740092Z env:
+build-windows	Setup Rust	2026-06-09T17:31:07.3740262Z   toolchain: stable
+build-windows	Setup Rust	2026-06-09T17:31:07.3740454Z ##[endgroup]
+build-windows	Setup Rust	2026-06-09T17:31:07.4656286Z ##[group]Run : construct rustup command line
+build-windows	Setup Rust	2026-06-09T17:31:07.4656634Z [36;1m: construct rustup command line[0m
+build-windows	Setup Rust	2026-06-09T17:31:07.4657072Z [36;1mecho "targets=$(for t in ${targets//,/ }; do echo -n ' --target' $t; done)" >> $GITHUB_OUTPUT[0m
+build-windows	Setup Rust	2026-06-09T17:31:07.4657703Z [36;1mecho "components=$(for c in ${components//,/ }; do echo -n ' --component' $c; done)" >> $GITHUB_OUTPUT[0m
+build-windows	Setup Rust	2026-06-09T17:31:07.4658187Z [36;1mecho "downgrade=" >> $GITHUB_OUTPUT[0m
+build-windows	Setup Rust	2026-06-09T17:31:07.4670942Z shell: C:\Program Files\Git\bin\bash.EXE --noprofile --norc -e -o pipefail {0}
+build-windows	Setup Rust	2026-06-09T17:31:07.4671361Z env:
+build-windows	Setup Rust	2026-06-09T17:31:07.4671525Z   targets: 
+build-windows	Setup Rust	2026-06-09T17:31:07.4671696Z   components: 
+build-windows	Setup Rust	2026-06-09T17:31:07.4671874Z ##[endgroup]
+build-windows	Setup Rust	2026-06-09T17:31:07.5380031Z ##[group]Run : set $CARGO_HOME
+build-windows	Setup Rust	2026-06-09T17:31:07.5380308Z [36;1m: set $CARGO_HOME[0m
+build-windows	Setup Rust	2026-06-09T17:31:07.5380632Z [36;1mecho CARGO_HOME=${CARGO_HOME:-"$USERPROFILE\.cargo"} >> $GITHUB_ENV[0m
+build-windows	Setup Rust	2026-06-09T17:31:07.5393532Z shell: C:\Program Files\Git\bin\bash.EXE --noprofile --norc -e -o pipefail {0}
+build-windows	Setup Rust	2026-06-09T17:31:07.5393935Z ##[endgroup]
+build-windows	Setup Rust	2026-06-09T17:31:07.5934899Z ##[group]Run : install rustup if needed on windows
+build-windows	Setup Rust	2026-06-09T17:31:07.5935256Z [36;1m: install rustup if needed on windows[0m
+build-windows	Setup Rust	2026-06-09T17:31:07.5935584Z [36;1mif ! command -v rustup &>/dev/null; then[0m
+build-windows	Setup Rust	2026-06-09T17:31:07.5936350Z [36;1m  curl --proto '=https' --tlsv1.2 --retry 10 --retry-connrefused --location --silent --show-error --fail https://win.rustup.rs/x86_64 --output 'D:\a\_temp\rustup-init.exe'[0m
+build-windows	Setup Rust	2026-06-09T17:31:07.5937682Z [36;1m  'D:\a\_temp\rustup-init.exe' --default-toolchain none --no-modify-path -y[0m
+build-windows	Setup Rust	2026-06-09T17:31:07.5938337Z [36;1m  echo "$CARGO_HOME\bin" >> $GITHUB_PATH[0m
+build-windows	Setup Rust	2026-06-09T17:31:07.5938610Z [36;1mfi[0m
+build-windows	Setup Rust	2026-06-09T17:31:07.5950409Z shell: C:\Program Files\Git\bin\bash.EXE --noprofile --norc -e -o pipefail {0}
+build-windows	Setup Rust	2026-06-09T17:31:07.5952657Z env:
+build-windows	Setup Rust	2026-06-09T17:31:07.5952867Z   CARGO_HOME: C:\Users\runneradmin\.cargo
+build-windows	Setup Rust	2026-06-09T17:31:07.5953123Z ##[endgroup]
+build-windows	Setup Rust	2026-06-09T17:31:07.6520527Z ##[group]Run rustup toolchain install stable --profile minimal --no-self-update
+build-windows	Setup Rust	2026-06-09T17:31:07.6521080Z [36;1mrustup toolchain install stable --profile minimal --no-self-update[0m
+build-windows	Setup Rust	2026-06-09T17:31:07.6534152Z shell: C:\Program Files\Git\bin\bash.EXE --noprofile --norc -e -o pipefail {0}
+build-windows	Setup Rust	2026-06-09T17:31:07.6534563Z env:
+build-windows	Setup Rust	2026-06-09T17:31:07.6534765Z   CARGO_HOME: C:\Users\runneradmin\.cargo
+build-windows	Setup Rust	2026-06-09T17:31:07.6535038Z   RUSTUP_PERMIT_COPY_RENAME: 1
+build-windows	Setup Rust	2026-06-09T17:31:07.6535264Z ##[endgroup]
+build-windows	Setup Rust	2026-06-09T17:31:10.7607714Z info: syncing channel updates for stable-x86_64-pc-windows-msvc
+build-windows	Setup Rust	2026-06-09T17:31:11.3500775Z info: latest update on 2026-05-28 for version 1.96.0 (ac68faa20 2026-05-25)
+build-windows	Setup Rust	2026-06-09T17:31:11.3886869Z info: removing previous version of component clippy
+build-windows	Setup Rust	2026-06-09T17:31:11.4041326Z info: removing previous version of component rustfmt
+build-windows	Setup Rust	2026-06-09T17:31:11.4199785Z info: removing previous version of component rust-std for target x86_64-pc-windows-gnu
+build-windows	Setup Rust	2026-06-09T17:31:11.5791587Z info: removing previous version of component rust-std for target i686-pc-windows-msvc
+build-windows	Setup Rust	2026-06-09T17:31:11.6807969Z info: removing previous version of component cargo
+build-windows	Setup Rust	2026-06-09T17:31:11.7505678Z info: removing previous version of component rust-std
+build-windows	Setup Rust	2026-06-09T17:31:11.8312688Z info: removing previous version of component rustc
+build-windows	Setup Rust	2026-06-09T17:31:11.9009015Z info: downloading 7 components
+build-windows	Setup Rust	2026-06-09T17:31:25.2028370Z 
+build-windows	Setup Rust	2026-06-09T17:31:25.2333197Z   stable-x86_64-pc-windows-msvc updated - rustc 1.96.0 (ac68faa20 2026-05-25) (from rustc 1.95.0 (59807616e 2026-04-14))
+build-windows	Setup Rust	2026-06-09T17:31:25.2334520Z 
+build-windows	Setup Rust	2026-06-09T17:31:25.2600879Z ##[group]Run rustup default stable
+build-windows	Setup Rust	2026-06-09T17:31:25.2601168Z [36;1mrustup default stable[0m
+build-windows	Setup Rust	2026-06-09T17:31:25.2613689Z shell: C:\Program Files\Git\bin\bash.EXE --noprofile --norc -e -o pipefail {0}
+build-windows	Setup Rust	2026-06-09T17:31:25.2614108Z env:
+build-windows	Setup Rust	2026-06-09T17:31:25.2614306Z   CARGO_HOME: C:\Users\runneradmin\.cargo
+build-windows	Setup Rust	2026-06-09T17:31:25.2614560Z ##[endgroup]
+build-windows	Setup Rust	2026-06-09T17:31:25.6347136Z info: using existing install for stable-x86_64-pc-windows-msvc
+build-windows	Setup Rust	2026-06-09T17:31:25.6417379Z info: default toolchain set to stable-x86_64-pc-windows-msvc
+build-windows	Setup Rust	2026-06-09T17:31:25.6417923Z 
+build-windows	Setup Rust	2026-06-09T17:31:25.6618030Z   stable-x86_64-pc-windows-msvc unchanged - rustc 1.96.0 (ac68faa20 2026-05-25)
+build-windows	Setup Rust	2026-06-09T17:31:25.6618456Z 
+build-windows	Setup Rust	2026-06-09T17:31:25.6817204Z ##[group]Run : create cachekey
+build-windows	Setup Rust	2026-06-09T17:31:25.6817480Z [36;1m: create cachekey[0m
+build-windows	Setup Rust	2026-06-09T17:31:25.6817971Z [36;1mDATE=$(rustc +stable --version --verbose | sed -ne 's/^commit-date: \(20[0-9][0-9]\)-\([01][0-9]\)-\([0-3][0-9]\)$/\1\2\3/p')[0m
+build-windows	Setup Rust	2026-06-09T17:31:25.6818628Z [36;1mHASH=$(rustc +stable --version --verbose | sed -ne 's/^commit-hash: //p')[0m
+build-windows	Setup Rust	2026-06-09T17:31:25.6819107Z [36;1mecho "cachekey=$(echo $DATE$HASH | head -c12)" >> $GITHUB_OUTPUT[0m
+build-windows	Setup Rust	2026-06-09T17:31:25.6831030Z shell: C:\Program Files\Git\bin\bash.EXE --noprofile --norc -e -o pipefail {0}
+build-windows	Setup Rust	2026-06-09T17:31:25.6831433Z env:
+build-windows	Setup Rust	2026-06-09T17:31:25.6831627Z   CARGO_HOME: C:\Users\runneradmin\.cargo
+build-windows	Setup Rust	2026-06-09T17:31:25.6831880Z ##[endgroup]
+build-windows	Setup Rust	2026-06-09T17:31:26.4667581Z ##[group]Run : disable incremental compilation
+build-windows	Setup Rust	2026-06-09T17:31:26.4667942Z [36;1m: disable incremental compilation[0m
+build-windows	Setup Rust	2026-06-09T17:31:26.4668265Z [36;1mif [ -z "${CARGO_INCREMENTAL+set}" ]; then[0m
+build-windows	Setup Rust	2026-06-09T17:31:26.4668585Z [36;1m  echo CARGO_INCREMENTAL=0 >> $GITHUB_ENV[0m
+build-windows	Setup Rust	2026-06-09T17:31:26.4668867Z [36;1mfi[0m
+build-windows	Setup Rust	2026-06-09T17:31:26.4681044Z shell: C:\Program Files\Git\bin\bash.EXE --noprofile --norc -e -o pipefail {0}
+build-windows	Setup Rust	2026-06-09T17:31:26.4681638Z env:
+build-windows	Setup Rust	2026-06-09T17:31:26.4681835Z   CARGO_HOME: C:\Users\runneradmin\.cargo
+build-windows	Setup Rust	2026-06-09T17:31:26.4682093Z ##[endgroup]
+build-windows	Setup Rust	2026-06-09T17:31:26.5186539Z ##[group]Run : enable colors in Cargo output
+build-windows	Setup Rust	2026-06-09T17:31:26.5187699Z [36;1m: enable colors in Cargo output[0m
+build-windows	Setup Rust	2026-06-09T17:31:26.5188028Z [36;1mif [ -z "${CARGO_TERM_COLOR+set}" ]; then[0m
+build-windows	Setup Rust	2026-06-09T17:31:26.5188373Z [36;1m  echo CARGO_TERM_COLOR=always >> $GITHUB_ENV[0m
+build-windows	Setup Rust	2026-06-09T17:31:26.5188670Z [36;1mfi[0m
+build-windows	Setup Rust	2026-06-09T17:31:26.5200600Z shell: C:\Program Files\Git\bin\bash.EXE --noprofile --norc -e -o pipefail {0}
+build-windows	Setup Rust	2026-06-09T17:31:26.5201020Z env:
+build-windows	Setup Rust	2026-06-09T17:31:26.5201231Z   CARGO_HOME: C:\Users\runneradmin\.cargo
+build-windows	Setup Rust	2026-06-09T17:31:26.5201508Z   CARGO_INCREMENTAL: 0
+build-windows	Setup Rust	2026-06-09T17:31:26.5201720Z ##[endgroup]
+build-windows	Setup Rust	2026-06-09T17:31:26.5728722Z ##[group]Run : enable Cargo sparse registry
+build-windows	Setup Rust	2026-06-09T17:31:26.5729158Z [36;1m: enable Cargo sparse registry[0m
+build-windows	Setup Rust	2026-06-09T17:31:26.5729591Z [36;1m# implemented in 1.66, stabilized in 1.68, made default in 1.70[0m
+build-windows	Setup Rust	2026-06-09T17:31:26.5730317Z [36;1mif [ -z "${CARGO_REGISTRIES_CRATES_IO_PROTOCOL+set}" -o -f "D:\a\_temp"/.implicit_cargo_registries_crates_io_protocol ]; then[0m
+build-windows	Setup Rust	2026-06-09T17:31:26.5731050Z [36;1m  if rustc +stable --version --verbose | grep -q '^release: 1\.6[89]\.'; then[0m
+build-windows	Setup Rust	2026-06-09T17:31:26.5731628Z [36;1m    touch "D:\a\_temp"/.implicit_cargo_registries_crates_io_protocol || true[0m
+build-windows	Setup Rust	2026-06-09T17:31:26.5732168Z [36;1m    echo CARGO_REGISTRIES_CRATES_IO_PROTOCOL=sparse >> $GITHUB_ENV[0m
+build-windows	Setup Rust	2026-06-09T17:31:26.5732720Z [36;1m  elif rustc +stable --version --verbose | grep -q '^release: 1\.6[67]\.'; then[0m
+build-windows	Setup Rust	2026-06-09T17:31:26.5733330Z [36;1m    touch "D:\a\_temp"/.implicit_cargo_registries_crates_io_protocol || true[0m
+build-windows	Setup Rust	2026-06-09T17:31:26.5733843Z [36;1m    echo CARGO_REGISTRIES_CRATES_IO_PROTOCOL=git >> $GITHUB_ENV[0m
+build-windows	Setup Rust	2026-06-09T17:31:26.5734259Z [36;1m  fi[0m
+build-windows	Setup Rust	2026-06-09T17:31:26.5734504Z [36;1mfi[0m
+build-windows	Setup Rust	2026-06-09T17:31:26.5766343Z shell: C:\Program Files\Git\bin\bash.EXE --noprofile --norc -e -o pipefail {0}
+build-windows	Setup Rust	2026-06-09T17:31:26.5767040Z env:
+build-windows	Setup Rust	2026-06-09T17:31:26.5767487Z   CARGO_HOME: C:\Users\runneradmin\.cargo
+build-windows	Setup Rust	2026-06-09T17:31:26.5768005Z   CARGO_INCREMENTAL: 0
+build-windows	Setup Rust	2026-06-09T17:31:26.5768291Z   CARGO_TERM_COLOR: always
+build-windows	Setup Rust	2026-06-09T17:31:26.5768519Z ##[endgroup]
+build-windows	Setup Rust	2026-06-09T17:31:26.8065969Z ##[group]Run : work around spurious network errors in curl 8.0
+build-windows	Setup Rust	2026-06-09T17:31:26.8067082Z [36;1m: work around spurious network errors in curl 8.0[0m
+build-windows	Setup Rust	2026-06-09T17:31:26.8068012Z [36;1m# https://rust-lang.zulipchat.com/#narrow/stream/246057-t-cargo/topic/timeout.20investigation[0m
+build-windows	Setup Rust	2026-06-09T17:31:26.8069069Z [36;1mif rustc +stable --version --verbose | grep -q '^release: 1\.7[01]\.'; then[0m
+build-windows	Setup Rust	2026-06-09T17:31:26.8069848Z [36;1m  echo CARGO_HTTP_MULTIPLEXING=false >> $GITHUB_ENV[0m
+build-windows	Setup Rust	2026-06-09T17:31:26.8070356Z [36;1mfi[0m
+build-windows	Setup Rust	2026-06-09T17:31:26.8088713Z shell: C:\Program Files\Git\bin\bash.EXE --noprofile --norc -e -o pipefail {0}
+build-windows	Setup Rust	2026-06-09T17:31:26.8089406Z env:
+build-windows	Setup Rust	2026-06-09T17:31:26.8089726Z   CARGO_HOME: C:\Users\runneradmin\.cargo
+build-windows	Setup Rust	2026-06-09T17:31:26.8090164Z   CARGO_INCREMENTAL: 0
+build-windows	Setup Rust	2026-06-09T17:31:26.8090519Z   CARGO_TERM_COLOR: always
+build-windows	Setup Rust	2026-06-09T17:31:26.8090882Z ##[endgroup]
+build-windows	Setup Rust	2026-06-09T17:31:26.9171299Z ##[group]Run rustc +stable --version --verbose
+build-windows	Setup Rust	2026-06-09T17:31:26.9171629Z [36;1mrustc +stable --version --verbose[0m
+build-windows	Setup Rust	2026-06-09T17:31:26.9183360Z shell: C:\Program Files\Git\bin\bash.EXE --noprofile --norc -e -o pipefail {0}
+build-windows	Setup Rust	2026-06-09T17:31:26.9183761Z env:
+build-windows	Setup Rust	2026-06-09T17:31:26.9183961Z   CARGO_HOME: C:\Users\runneradmin\.cargo
+build-windows	Setup Rust	2026-06-09T17:31:26.9184223Z   CARGO_INCREMENTAL: 0
+build-windows	Setup Rust	2026-06-09T17:31:26.9184429Z   CARGO_TERM_COLOR: always
+build-windows	Setup Rust	2026-06-09T17:31:26.9184634Z ##[endgroup]
+build-windows	Setup Rust	2026-06-09T17:31:26.9988381Z rustc 1.96.0 (ac68faa20 2026-05-25)
+build-windows	Setup Rust	2026-06-09T17:31:26.9988960Z binary: rustc
+build-windows	Setup Rust	2026-06-09T17:31:26.9989528Z commit-hash: ac68faa20c58cbccd01ee7208bf3b6e93a7d7f96
+build-windows	Setup Rust	2026-06-09T17:31:26.9990091Z commit-date: 2026-05-25
+build-windows	Setup Rust	2026-06-09T17:31:26.9991806Z host: x86_64-pc-windows-msvc
+build-windows	Setup Rust	2026-06-09T17:31:26.9992544Z release: 1.96.0
+build-windows	Setup Rust	2026-06-09T17:31:26.9992948Z LLVM version: 22.1.2
+build-windows	Rust cache	﻿2026-06-09T17:31:27.0298110Z ##[group]Run Swatinem/rust-cache@v2
+build-windows	Rust cache	2026-06-09T17:31:27.0298451Z with:
+build-windows	Rust cache	2026-06-09T17:31:27.0298643Z   workspaces: src-tauri
+build-windows	Rust cache	2026-06-09T17:31:27.0298864Z   prefix-key: v0-rust
+build-windows	Rust cache	2026-06-09T17:31:27.0299076Z   add-job-id-key: true
+build-windows	Rust cache	2026-06-09T17:31:27.0299296Z   add-rust-environment-hash-key: true
+build-windows	Rust cache	2026-06-09T17:31:27.0299547Z   cache-targets: true
+build-windows	Rust cache	2026-06-09T17:31:27.0299748Z   cache-all-crates: false
+build-windows	Rust cache	2026-06-09T17:31:27.0299973Z   cache-workspace-crates: false
+build-windows	Rust cache	2026-06-09T17:31:27.0300202Z   save-if: true
+build-windows	Rust cache	2026-06-09T17:31:27.0300396Z   cache-provider: github
+build-windows	Rust cache	2026-06-09T17:31:27.0300603Z   cache-bin: true
+build-windows	Rust cache	2026-06-09T17:31:27.0300796Z   lookup-only: false
+build-windows	Rust cache	2026-06-09T17:31:27.0300982Z   cmd-format: {0}
+build-windows	Rust cache	2026-06-09T17:31:27.0301152Z env:
+build-windows	Rust cache	2026-06-09T17:31:27.0301332Z   CARGO_HOME: C:\Users\runneradmin\.cargo
+build-windows	Rust cache	2026-06-09T17:31:27.0301600Z   CARGO_INCREMENTAL: 0
+build-windows	Rust cache	2026-06-09T17:31:27.0301796Z   CARGO_TERM_COLOR: always
+build-windows	Rust cache	2026-06-09T17:31:27.0302001Z ##[endgroup]
+build-windows	Rust cache	2026-06-09T17:31:27.3536166Z (node:1776) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+build-windows	Rust cache	2026-06-09T17:31:27.3537074Z (Use `node --trace-deprecation ...` to show where the warning was created)
+build-windows	Rust cache	2026-06-09T17:31:28.4864793Z ##[group]Cache Configuration
+build-windows	Rust cache	2026-06-09T17:31:28.4865479Z Cache Provider:
+build-windows	Rust cache	2026-06-09T17:31:28.4866047Z     github
+build-windows	Rust cache	2026-06-09T17:31:28.4866495Z Workspaces:
+build-windows	Rust cache	2026-06-09T17:31:28.4867035Z     D:\a\Cherry-app\Cherry-app\src-tauri
+build-windows	Rust cache	2026-06-09T17:31:28.4867640Z Cache Paths:
+build-windows	Rust cache	2026-06-09T17:31:28.4868158Z     C:\Users\runneradmin\.cargo\bin
+build-windows	Rust cache	2026-06-09T17:31:28.4868942Z     C:\Users\runneradmin\.cargo\.crates.toml
+build-windows	Rust cache	2026-06-09T17:31:28.4874869Z     C:\Users\runneradmin\.cargo\.crates2.json
+build-windows	Rust cache	2026-06-09T17:31:28.4875657Z     C:\Users\runneradmin\.cargo\registry
+build-windows	Rust cache	2026-06-09T17:31:28.4876457Z     C:\Users\runneradmin\.cargo\git
+build-windows	Rust cache	2026-06-09T17:31:28.4877114Z     D:\a\Cherry-app\Cherry-app\src-tauri\target
+build-windows	Rust cache	2026-06-09T17:31:28.4877739Z Restore Key:
+build-windows	Rust cache	2026-06-09T17:31:28.4878280Z     v0-rust-build-windows-Windows_NT-x64-5dcabeed
+build-windows	Rust cache	2026-06-09T17:31:28.4878935Z Cache Key:
+build-windows	Rust cache	2026-06-09T17:31:28.4879538Z     v0-rust-build-windows-Windows_NT-x64-5dcabeed-f66d5d7d
+build-windows	Rust cache	2026-06-09T17:31:28.4880179Z .. Prefix:
+build-windows	Rust cache	2026-06-09T17:31:28.4880675Z   - v0-rust-build-windows-Windows_NT-x64
+build-windows	Rust cache	2026-06-09T17:31:28.4881275Z .. Environment considered:
+build-windows	Rust cache	2026-06-09T17:31:28.4881758Z   - Rust Versions:
+build-windows	Rust cache	2026-06-09T17:31:28.4882447Z     - 1.96.0 x86_64-pc-windows-msvc ac68faa20c58cbccd01ee7208bf3b6e93a7d7f96
+build-windows	Rust cache	2026-06-09T17:31:28.4883382Z     - 1.96.0 x86_64-pc-windows-msvc ac68faa20c58cbccd01ee7208bf3b6e93a7d7f96
+build-windows	Rust cache	2026-06-09T17:31:28.4884498Z   - CARGO_HOME
+build-windows	Rust cache	2026-06-09T17:31:28.4884906Z   - CARGO_INCREMENTAL
+build-windows	Rust cache	2026-06-09T17:31:28.4885332Z   - CARGO_TERM_COLOR
+build-windows	Rust cache	2026-06-09T17:31:28.4885774Z .. Lockfiles considered:
+build-windows	Rust cache	2026-06-09T17:31:28.4886382Z   - D:\a\Cherry-app\Cherry-app\src-tauri\Cargo.lock
+build-windows	Rust cache	2026-06-09T17:31:28.4887093Z   - D:\a\Cherry-app\Cherry-app\src-tauri\Cargo.toml
+build-windows	Rust cache	2026-06-09T17:31:28.4888215Z ##[endgroup]
+build-windows	Rust cache	2026-06-09T17:31:28.4888621Z 
+build-windows	Rust cache	2026-06-09T17:31:28.4888937Z ... Restoring cache ...
+build-windows	Rust cache	2026-06-09T17:31:28.8594100Z No cache found.
+build-windows	Install frontend dependencies	﻿2026-06-09T17:31:28.8885445Z ##[group]Run npm install
+build-windows	Install frontend dependencies	2026-06-09T17:31:28.8885769Z [36;1mnpm install[0m
+build-windows	Install frontend dependencies	2026-06-09T17:31:28.8994915Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+build-windows	Install frontend dependencies	2026-06-09T17:31:28.8995320Z env:
+build-windows	Install frontend dependencies	2026-06-09T17:31:28.8995532Z   CARGO_HOME: C:\Users\runneradmin\.cargo
+build-windows	Install frontend dependencies	2026-06-09T17:31:28.8995806Z   CARGO_INCREMENTAL: 0
+build-windows	Install frontend dependencies	2026-06-09T17:31:28.8996024Z   CARGO_TERM_COLOR: always
+build-windows	Install frontend dependencies	2026-06-09T17:31:28.8996251Z   CACHE_ON_FAILURE: false
+build-windows	Install frontend dependencies	2026-06-09T17:31:28.8996482Z ##[endgroup]
+build-windows	Install frontend dependencies	2026-06-09T17:31:35.1370119Z 
+build-windows	Install frontend dependencies	2026-06-09T17:31:35.1371008Z added 2 packages, and audited 3 packages in 937ms
+build-windows	Install frontend dependencies	2026-06-09T17:31:35.1371617Z 
+build-windows	Install frontend dependencies	2026-06-09T17:31:35.1371929Z 1 package is looking for funding
+build-windows	Install frontend dependencies	2026-06-09T17:31:35.1373286Z   run `npm fund` for details
+build-windows	Install frontend dependencies	2026-06-09T17:31:35.1381575Z 
+build-windows	Install frontend dependencies	2026-06-09T17:31:35.1381936Z found 0 vulnerabilities
+build-windows	Build Tauri app	﻿2026-06-09T17:31:35.4700986Z ##[group]Run npx tauri build
+build-windows	Build Tauri app	2026-06-09T17:31:35.4701716Z [36;1mnpx tauri build[0m
+build-windows	Build Tauri app	2026-06-09T17:31:35.4759413Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+build-windows	Build Tauri app	2026-06-09T17:31:35.4759768Z env:
+build-windows	Build Tauri app	2026-06-09T17:31:35.4759965Z   CARGO_HOME: C:\Users\runneradmin\.cargo
+build-windows	Build Tauri app	2026-06-09T17:31:35.4760222Z   CARGO_INCREMENTAL: 0
+build-windows	Build Tauri app	2026-06-09T17:31:35.4760428Z   CARGO_TERM_COLOR: always
+build-windows	Build Tauri app	2026-06-09T17:31:35.4760647Z   CACHE_ON_FAILURE: false
+build-windows	Build Tauri app	2026-06-09T17:31:35.4760849Z ##[endgroup]
+build-windows	Build Tauri app	2026-06-09T17:31:37.6102335Z         Info Looking up installed tauri packages to check mismatched versions...
+build-windows	Build Tauri app	2026-06-09T17:31:38.6039337Z [1m[92m    Updating[0m crates.io index
+build-windows	Build Tauri app	2026-06-09T17:31:39.9865465Z [1m[92m Downloading[0m crates ...
+build-windows	Build Tauri app	2026-06-09T17:31:40.1817553Z [1m[92m  Downloaded[0m alloc-no-stdlib v2.0.4
+build-windows	Build Tauri app	2026-06-09T17:31:40.2068483Z [1m[92m  Downloaded[0m proc-macro-hack v0.5.20+deprecated
+build-windows	Build Tauri app	2026-06-09T17:31:40.2352570Z [1m[92m  Downloaded[0m strsim v0.11.1
+build-windows	Build Tauri app	2026-06-09T17:31:40.2560317Z [1m[92m  Downloaded[0m string_cache_codegen v0.5.4
+build-windows	Build Tauri app	2026-06-09T17:31:40.2703244Z [1m[92m  Downloaded[0m synstructure v0.13.2
+build-windows	Build Tauri app	2026-06-09T17:31:40.2835664Z [1m[92m  Downloaded[0m toml_datetime v0.7.5+spec-1.1.0
+build-windows	Build Tauri app	2026-06-09T17:31:40.3011435Z [1m[92m  Downloaded[0m vswhom v0.1.0
+build-windows	Build Tauri app	2026-06-09T17:31:40.3155050Z [1m[92m  Downloaded[0m unic-common v0.9.0
+build-windows	Build Tauri app	2026-06-09T17:31:40.3267426Z [1m[92m  Downloaded[0m winreg v0.55.0
+build-windows	Build Tauri app	2026-06-09T17:31:40.3577181Z [1m[92m  Downloaded[0m url v2.5.8
+build-windows	Build Tauri app	2026-06-09T17:31:40.3787761Z [1m[92m  Downloaded[0m syn v1.0.109
+build-windows	Build Tauri app	2026-06-09T17:31:40.4596578Z [1m[92m  Downloaded[0m windows-version v0.1.7
+build-windows	Build Tauri app	2026-06-09T17:31:40.4703966Z [1m[92m  Downloaded[0m writeable v0.6.2
+build-windows	Build Tauri app	2026-06-09T17:31:40.4887313Z [1m[92m  Downloaded[0m zerofrom-derive v0.1.6
+build-windows	Build Tauri app	2026-06-09T17:31:40.4984632Z [1m[92m  Downloaded[0m windows-implement v0.60.2
+build-windows	Build Tauri app	2026-06-09T17:31:40.5092977Z [1m[92m  Downloaded[0m winnow v0.7.14
+build-windows	Build Tauri app	2026-06-09T17:31:41.4039125Z [1m[92m  Downloaded[0m windows-link v0.1.3
+build-windows	Build Tauri app	2026-06-09T17:31:41.4147508Z [1m[92m  Downloaded[0m windows-collections v0.2.0
+build-windows	Build Tauri app	2026-06-09T17:31:41.4277801Z [1m[92m  Downloaded[0m yoke-derive v0.8.1
+build-windows	Build Tauri app	2026-06-09T17:31:41.4369441Z [1m[92m  Downloaded[0m winapi-util v0.1.11
+build-windows	Build Tauri app	2026-06-09T17:31:41.4504794Z [1m[92m  Downloaded[0m regex-syntax v0.8.9
+build-windows	Build Tauri app	2026-06-09T17:31:41.4882102Z [1m[92m  Downloaded[0m windows-threading v0.1.0
+build-windows	Build Tauri app	2026-06-09T17:31:41.4991557Z [1m[92m  Downloaded[0m regex-automata v0.4.14
+build-windows	Build Tauri app	2026-06-09T17:31:41.5817659Z [1m[92m  Downloaded[0m windows-targets v0.52.6
+build-windows	Build Tauri app	2026-06-09T17:31:41.5895872Z [1m[92m  Downloaded[0m windows-result v0.3.4
+build-windows	Build Tauri app	2026-06-09T17:31:41.6040390Z [1m[92m  Downloaded[0m windows-interface v0.59.3
+build-windows	Build Tauri app	2026-06-09T17:31:41.6125835Z [1m[92m  Downloaded[0m windows-future v0.2.1
+build-windows	Build Tauri app	2026-06-09T17:31:41.6320148Z [1m[92m  Downloaded[0m webview2-com v0.38.2
+build-windows	Build Tauri app	2026-06-09T17:31:41.6425289Z [1m[92m  Downloaded[0m walkdir v2.5.0
+build-windows	Build Tauri app	2026-06-09T17:31:41.6618545Z [1m[92m  Downloaded[0m vcpkg v0.2.15
+build-windows	Build Tauri app	2026-06-09T17:31:41.7301601Z Terminate batch job (Y/N)? 
+build-windows	Build Tauri app	2026-06-09T17:31:43.0167670Z ##[error]The operation was canceled.
+build-windows	Post Checkout repository	﻿2026-06-09T17:31:44.7474519Z Post job cleanup.
+build-windows	Post Checkout repository	2026-06-09T17:31:45.3597331Z [command]"C:\Program Files\Git\bin\git.exe" version
+build-windows	Post Checkout repository	2026-06-09T17:31:45.3871500Z git version 2.54.0.windows.1
+build-windows	Post Checkout repository	2026-06-09T17:31:45.3945050Z Temporarily overriding HOME='D:\a\_temp\9ad26a04-0827-4593-aa09-9a5577d4462f' before making global git config changes
+build-windows	Post Checkout repository	2026-06-09T17:31:45.3945862Z Adding repository directory to the temporary git global config as a safe directory
+build-windows	Post Checkout repository	2026-06-09T17:31:45.3956261Z [command]"C:\Program Files\Git\bin\git.exe" config --global --add safe.directory D:\a\Cherry-app\Cherry-app
+build-windows	Post Checkout repository	2026-06-09T17:31:45.4267701Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp core\.sshCommand
+build-windows	Post Checkout repository	2026-06-09T17:31:45.4571571Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :\""
+build-windows	Post Checkout repository	2026-06-09T17:31:45.9897067Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+build-windows	Post Checkout repository	2026-06-09T17:31:46.0153912Z http.https://github.com/.extraheader
+build-windows	Post Checkout repository	2026-06-09T17:31:46.0206434Z [command]"C:\Program Files\Git\bin\git.exe" config --local --unset-all http.https://github.com/.extraheader
+build-windows	Post Checkout repository	2026-06-09T17:31:46.0506822Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :\""
+build-windows	Post Checkout repository	2026-06-09T17:31:46.5752366Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp ^includeIf\.gitdir:
+build-windows	Post Checkout repository	2026-06-09T17:31:46.6048500Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "git config --local --show-origin --name-only --get-regexp remote.origin.url"
+build-windows	Complete job	﻿2026-06-09T17:31:47.1446480Z Cleaning up orphan processes
+build-windows	Complete job	2026-06-09T17:31:47.1771684Z ##[warning]Node.js 20 actions are deprecated. The following actions are running on Node.js 20 and may not work as expected: actions/checkout@v4, actions/setup-node@v4. Actions will be forced to run with Node.js 24 by default starting June 16th, 2026. Node.js 20 will be removed from the runner on September 16th, 2026. Please check if updated versions of these actions are available that support Node.js 24. To opt into Node.js 24 now, set the FORCE_JAVASCRIPT_ACTIONS_TO_NODE24=true environment variable on the runner or in your workflow file. Once Node.js 24 becomes the default, you can temporarily opt out by setting ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION=true. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/

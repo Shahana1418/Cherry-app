@@ -70,23 +70,56 @@ fn list_serial_ports() -> Result<Vec<SerialPortInfo>, String> {
 fn auto_detect_esp_port() -> Result<String, String> {
     let ports = serialport::available_ports().map_err(|e| e.to_string())?;
     
-    // ESP USB hardware VID/PID signatures
+    // ESP USB hardware VID/PID signatures (comprehensive list)
     let esp_usb_ids: Vec<(u16, u16)> = vec![
+        // ── CH340 / CH341 family (most common on cheap ESP32 boards)
         (0x1A86, 0x7523), // CH340
-        (0x1A86, 0x55D4), // CH9102F newer chip
-        (0x10C4, 0xEA60), // CP2102
-        (0x10C4, 0xEA70), // CP2104
-        (0x0403, 0x6001), // FTDI
+        (0x1A86, 0x7522), // CH340K
+        (0x1A86, 0x5523), // CH341A
+        (0x1A86, 0x55D4), // CH9102F
+        (0x1A86, 0x55D3), // CH9102X
+        (0x1A86, 0x55D5), // CH343P
+        (0x1A86, 0xE523), // CH330
+        // ── Silicon Labs CP210x family
+        (0x10C4, 0xEA60), // CP2102 / CP2102N
+        (0x10C4, 0xEA70), // CP2105
+        (0x10C4, 0xEA80), // CP2108
+        // ── FTDI family
+        (0x0403, 0x6001), // FT232RL
+        (0x0403, 0x6010), // FT2232
+        (0x0403, 0x6011), // FT4232
+        (0x0403, 0x6014), // FT232H
+        (0x0403, 0x6015), // FT-X series (FT231X, FT230X)
+        // ── Espressif native USB (ESP32-S2, S3, C3, C6, H2)
         (0x303A, 0x1001), // ESP32-S3 native USB CDC
         (0x303A, 0x0002), // ESP32 USB JTAG / UART
+        (0x303A, 0x1002), // ESP32-S2 native USB
+        (0x303A, 0x0003), // ESP32-C3 USB serial
+        (0x303A, 0x0004), // ESP32-C6 USB serial
+        (0x303A, 0x0005), // ESP32-H2 USB serial
+        (0x303A, 0x4001), // ESP32-S3 DFU
+        // ── WCH (other Chinese USB-serial chips on some clones)
+        (0x4348, 0x5523), // WCH CH341A alt
+        (0x1A86, 0x7524), // CH341 serial
     ];
 
-    for p in ports {
+    // First pass: try to find a known ESP USB VID/PID
+    let mut first_usb_port: Option<String> = None;
+    for p in &ports {
         if let SerialPortType::UsbPort(info) = &p.port_type {
+            // Remember the first USB serial port as fallback
+            if first_usb_port.is_none() {
+                first_usb_port = Some(p.port_name.clone());
+            }
             if esp_usb_ids.contains(&(info.vid, info.pid)) {
-                return Ok(p.port_name);
+                return Ok(p.port_name.clone());
             }
         }
+    }
+
+    // Fallback: if no known VID/PID matched but there IS a USB serial port, use it
+    if let Some(port_name) = first_usb_port {
+        return Ok(port_name);
     }
     
     Err("No compatible ESP USB hardware detected.".to_string())
