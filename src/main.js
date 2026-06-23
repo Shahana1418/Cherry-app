@@ -2281,9 +2281,6 @@ document.addEventListener('DOMContentLoaded', async () => {
       panel.style.transform = 'scale(0.98)';
       panel.style.transition = 'all 0.2s ease-out';
       setTimeout(() => {
-        if (chartInstance.chartJS) {
-          chartInstance.chartJS.destroy();
-        }
         panel.remove();
         activeRunCharts = activeRunCharts.filter(c => c.id !== chartInstance.id);
       }, 200);
@@ -2347,244 +2344,219 @@ document.addEventListener('DOMContentLoaded', async () => {
     const canvas = chart.canvas;
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
+    const dpr = window.devicePixelRatio || 1;
 
+    // Read data to calculate dynamic width
     const pts = chart.readings || [];
+    const pxPerStep = 60; // 60 pixels width per data point
 
-    // Disable any manual resizing logic that breaks Chart.js
-    canvas.style.width = '100%';
-    canvas.style.height = '100%';
+    // Size canvas properly
+    const rect = canvas.parentElement.getBoundingClientRect();
+    const minW = rect.width - 48; // padding (24 left + 24 right)
+    const requiredDataWidth = 65 + 20 + (pts.length * pxPerStep); // margin.left + margin.right + data space
+    const w = Math.max(minW, requiredDataWidth);
 
+    // Auto-scroll to the right so new data is instantly visible
+    const wrap = canvas.closest('.rc-canvas-wrap');
+    if (wrap && canvas.width !== (w * (window.devicePixelRatio || 1))) {
+      // Only snap scroll if the canvas actually grew larger to fit new data
+      setTimeout(() => wrap.scrollLeft = wrap.scrollWidth, 0);
+    }
+
+    const h = 220;
+    canvas.width = w * dpr;
+    canvas.height = h * dpr;
+    canvas.style.width = w + 'px';
+    canvas.style.height = h + 'px';
+    ctx.scale(dpr, dpr);
+
+    // Parse values
     const highTol = parseFloat(cfg.highTol) || 0;
     const drawing = parseFloat(cfg.drawing) || 0;
     const lowTol = parseFloat(cfg.lowTol) || 0;
     const isShaft = (cfg.type || '').toLowerCase() === 'shaft';
 
-    // ── Clean Professional Color Palette ──
-    const COLOR_BG = '#0b0f19'; // Very dark blue/slate
-    const COLOR_TEXT = 'rgba(255,255,255,0.7)';
-    const COLOR_GRID = 'rgba(255,255,255,0.05)';
+    // Colors based on type
+    // Hole: High=Red, Drawing=Green, Low=Orange
+    // Shaft: High=Orange, Drawing=Green, Low=Red
+    const COLOR_RED = '#ef4444';      // Red
+    const COLOR_GREEN = '#22c55e';    // Green
+    const COLOR_ORANGE = '#f59e0b';   // Orange (using amber/orange to be visible)
 
-    // Tolerance zone colors (soft, flat, transparent)
-    const TZONE_RED = 'rgba(239, 68, 68, 0.1)';
-    const TZONE_GREEN = 'rgba(34, 197, 94, 0.08)';
-    const TZONE_ORANGE = 'rgba(245, 158, 11, 0.1)';
-
-    // Threshold line colors (solid flat)
-    const TLINE_RED = '#ef4444';
-    const TLINE_GREEN = '#22c55e';
-    const TLINE_ORANGE = '#f59e0b';
-    const TLINE_DRAW = '#38bdf8';
-
-    let zColorHigh, zColorMid, zColorLow;
-    let lColorHigh, lColorLow;
-
+    let colorHigh, colorDraw, colorLow;
     if (isShaft) {
-      zColorHigh = TZONE_ORANGE; lColorHigh = TLINE_ORANGE;
-      zColorMid = TZONE_GREEN;
-      zColorLow = TZONE_RED; lColorLow = TLINE_RED;
+      colorHigh = COLOR_ORANGE;
+      colorDraw = COLOR_GREEN;
+      colorLow = COLOR_RED;
     } else {
-      zColorHigh = TZONE_RED; lColorHigh = TLINE_RED;
-      zColorMid = TZONE_GREEN;
-      zColorLow = TZONE_ORANGE; lColorLow = TLINE_ORANGE;
+      colorHigh = COLOR_RED;
+      colorDraw = COLOR_GREEN;
+      colorLow = COLOR_ORANGE;
     }
 
-    const yHigh = Math.max(highTol, lowTol);
-    const yLow = Math.min(highTol, lowTol);
+    // Chart area with margins
+    const margin = { top: 20, right: 20, bottom: 35, left: 65 };
+    const cw = w - margin.left - margin.right;
+    const ch = h - margin.top - margin.bottom;
 
-    // Calculate Y-axis bounds
+    // Compute Y range
     let vals = [highTol, drawing, lowTol].filter(v => v !== 0);
-    if (pts.length > 0) vals = vals.concat(pts.map(p => p.reading));
 
-    const yMin = vals.length > 0 ? Math.min(...vals) : 0;
-    const yMax = vals.length > 0 ? Math.max(...vals) : 10;
-    const yPadding = (yMax - yMin) * 0.2 || 1;
+    if (pts.length > 0) {
+      vals = vals.concat(pts.map(p => p.reading));
+    }
 
-    // Prepare chart data
-    const labels = pts.map(p => p.count);
-    const data = pts.map(p => p.reading);
+    if (vals.length === 0) {
+      // No data — draw placeholder
+      ctx.fillStyle = 'rgba(255,255,255,0.15)';
+      ctx.font = '13px Outfit, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('No tolerance values configured', w / 2, h / 2);
+      return;
+    }
 
-    const chartConfig = {
-      type: 'line',
-      data: {
-        labels: labels.length > 0 ? labels : ['1'],
-        datasets: [{
-          label: 'Reading',
-          data: data.length > 0 ? data : [null],
-          borderColor: '#ffffff',
-          backgroundColor: 'rgba(255, 255, 255, 0.1)',
-          borderWidth: 2,
-          pointBackgroundColor: '#ffffff',
-          pointBorderColor: COLOR_BG,
-          pointBorderWidth: 2,
-          pointRadius: 4,
-          pointHoverRadius: 6,
-          fill: true,
-          tension: 0.4 // Smooth bezier curve
-        }]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        animation: {
-          duration: 400,
-          easing: 'easeOutQuart'
-        },
-        interaction: {
-          intersect: false,
-          mode: 'index',
-        },
-        layout: {
-          padding: 10
-        },
-        plugins: {
-          legend: { display: false },
-          tooltip: {
-            backgroundColor: 'rgba(15, 23, 42, 0.9)',
-            titleFont: { family: "'Outfit', sans-serif", size: 13 },
-            bodyFont: { family: "'Outfit', monospace", size: 14, weight: 'bold' },
-            padding: 12,
-            cornerRadius: 8,
-            displayColors: false,
-            callbacks: {
-              label: function (context) {
-                return `Value: ${context.parsed.y.toFixed(4)}`;
-              }
-            }
-          },
-          annotation: {
-            annotations: {
-              // High Threshold Zone
-              box1: {
-                type: 'box',
-                yMin: yHigh,
-                yMax: yMax + yPadding,
-                backgroundColor: zColorHigh,
-                borderWidth: 0,
-                drawTime: 'beforeDatasetsDraw'
-              },
-              // In-Tolerance Zone
-              box2: {
-                type: 'box',
-                yMin: yLow,
-                yMax: yHigh,
-                backgroundColor: zColorMid,
-                borderWidth: 0,
-                drawTime: 'beforeDatasetsDraw'
-              },
-              // Low Threshold Zone
-              box3: {
-                type: 'box',
-                yMin: yMin - yPadding,
-                yMax: yLow,
-                backgroundColor: zColorLow,
-                borderWidth: 0,
-                drawTime: 'beforeDatasetsDraw'
-              },
-              // High Line
-              line1: {
-                type: 'line',
-                yMin: highTol,
-                yMax: highTol,
-                borderColor: lColorHigh,
-                borderWidth: 2,
-                borderDash: [5, 5],
-                label: {
-                  content: 'H: ' + highTol.toFixed(3),
-                  display: true,
-                  position: 'start',
-                  backgroundColor: 'rgba(11, 15, 25, 0.8)',
-                  color: lColorHigh,
-                  font: { family: 'Outfit', size: 11, weight: 'bold' }
-                }
-              },
-              // Drawing Line
-              line2: {
-                type: 'line',
-                yMin: drawing,
-                yMax: drawing,
-                borderColor: TLINE_DRAW,
-                borderWidth: 2,
-                borderDash: [5, 5],
-                label: {
-                  content: 'D: ' + drawing.toFixed(3),
-                  display: true,
-                  position: 'start',
-                  backgroundColor: 'rgba(11, 15, 25, 0.8)',
-                  color: TLINE_DRAW,
-                  font: { family: 'Outfit', size: 11, weight: 'bold' }
-                }
-              },
-              // Low Line
-              line3: {
-                type: 'line',
-                yMin: lowTol,
-                yMax: lowTol,
-                borderColor: lColorLow,
-                borderWidth: 2,
-                borderDash: [5, 5],
-                label: {
-                  content: 'L: ' + lowTol.toFixed(3),
-                  display: true,
-                  position: 'start',
-                  backgroundColor: 'rgba(11, 15, 25, 0.8)',
-                  color: lColorLow,
-                  font: { family: 'Outfit', size: 11, weight: 'bold' }
-                }
-              }
-            }
-          }
-        },
-        scales: {
-          x: {
-            grid: {
-              color: COLOR_GRID,
-              drawBorder: false
-            },
-            ticks: {
-              color: COLOR_TEXT,
-              font: { family: 'Outfit', size: 11 }
-            },
-            title: {
-              display: true,
-              text: 'SAMPLE NO',
-              color: 'rgba(255,255,255,0.3)',
-              font: { family: 'Outfit', size: 10, weight: 'bold' }
-            }
-          },
-          y: {
-            min: yMin - yPadding,
-            max: yMax + yPadding,
-            grid: {
-              color: COLOR_GRID,
-              drawBorder: false
-            },
-            ticks: {
-              color: COLOR_TEXT,
-              font: { family: 'Outfit', size: 11 },
-              callback: function (value) {
-                return value.toFixed(3);
-              }
-            }
-          }
-        }
-      }
+    const yMin = Math.min(...vals);
+    const yMax = Math.max(...vals);
+    const yPadding = (yMax - yMin) * 0.35 || 1;
+    const yStart = yMin - yPadding;
+    const yEnd = yMax + yPadding;
+
+    // Map Y value to pixel
+    const yToPixel = (val) => margin.top + ch - ((val - yStart) / (yEnd - yStart)) * ch;
+
+    // Display ALL points extending infinitely
+    const visiblePts = pts;
+
+    // Map X value (index) to pixel using absolute pixels per step
+    const xToPixel = (i) => {
+      // If pts.length < 10, we span across the minimum width. 
+      // Otherwise we use absolute pxPerStep.
+      const intervals = Math.max(10, pts.length);
+      return margin.left + (i / intervals) * cw;
     };
 
-    if (chart.chartJS) {
-      // Update existing instance
-      chart.chartJS.data = chartConfig.data;
-      chart.chartJS.options = chartConfig.options;
-      chart.chartJS.update('none'); // Update without full redeploy animation
-    } else {
-      // Set background color of canvas wrapper
-      const wrap = canvas.closest('.rc-canvas-wrap');
-      if (wrap) {
-        wrap.style.background = COLOR_BG;
-        wrap.style.overflowX = 'hidden'; // Chart.js handles its own scaling
-      }
+    const maxVal = Math.max(10, pts.length);
+    const xSteps = Math.floor(maxVal / 2); // Steps for 0, 2, 4, 6, 8...
 
-      // Create new instance
-      chart.chartJS = new Chart(ctx, chartConfig);
+    // ── Background ──
+    ctx.fillStyle = '#111827'; // Darker gray-blue to match new app theme
+    ctx.fillRect(0, 0, w, h);
+
+    // ── Shaded bands ──
+    const yHigh = yToPixel(Math.max(highTol, lowTol));
+    const yLow = yToPixel(Math.min(highTol, lowTol));
+
+    // Top Band (Above High Tolerance)
+    ctx.fillStyle = isShaft
+      ? 'rgba(245, 158, 11, 0.25)'   // Orange for Shaft high side
+      : 'rgba(239, 68, 68, 0.25)';   // Red for Hole high side
+    ctx.fillRect(margin.left, margin.top, cw, yHigh - margin.top);
+
+    // Middle Band (Between High and Low Tolerance)
+    ctx.fillStyle = 'rgba(34, 197, 94, 0.25)'; // Green
+    ctx.fillRect(margin.left, yHigh, cw, yLow - yHigh);
+
+    // Bottom Band (Below Low Tolerance)
+    ctx.fillStyle = isShaft
+      ? 'rgba(239, 68, 68, 0.25)'    // Red for Shaft low side
+      : 'rgba(245, 158, 11, 0.25)';  // Orange for Hole low side
+    ctx.fillRect(margin.left, yLow, cw, (margin.top + ch) - yLow);
+
+    // ── Grid lines ──
+    ctx.strokeStyle = 'rgba(255,255,255,0.06)';
+    ctx.lineWidth = 1;
+    for (let j = 0; j <= xSteps; j++) {
+      const val = 2 * j; // 0, 2, 4, 6, 8, 10
+      const x = xToPixel(val);
+      ctx.beginPath();
+      ctx.moveTo(x, margin.top);
+      ctx.lineTo(x, margin.top + ch);
+      ctx.stroke();
+    }
+
+    // ── Axes ──
+    ctx.strokeStyle = 'rgba(255,255,255,0.2)';
+    ctx.lineWidth = 1;
+    // Y axis
+    ctx.beginPath();
+    ctx.moveTo(margin.left, margin.top);
+    ctx.lineTo(margin.left, margin.top + ch);
+    ctx.stroke();
+    // X axis
+    ctx.beginPath();
+    ctx.moveTo(margin.left, margin.top + ch);
+    ctx.lineTo(margin.left + cw, margin.top + ch);
+    ctx.stroke();
+
+    // X axis labels
+    ctx.fillStyle = 'rgba(255,255,255,0.6)';
+    ctx.font = '11px Outfit, sans-serif';
+    ctx.textAlign = 'center';
+    for (let j = 0; j <= xSteps; j++) {
+      const val = 2 * j; // 0, 2, 4, 6, 8, 10
+      const x = xToPixel(val);
+      ctx.fillText(val.toString(), x, margin.top + ch + 16);
+    }
+
+    // ── Tolerance lines (dashed) ──
+    function drawDashedLine(yVal, color) {
+      const y = yToPixel(yVal);
+      ctx.save();
+      ctx.setLineDash([6, 4]);
+      ctx.strokeStyle = color;
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(margin.left, y);
+      ctx.lineTo(margin.left + cw, y);
+      ctx.stroke();
+      ctx.restore();
+
+      // Y-axis label
+      ctx.fillStyle = color;
+      ctx.font = 'bold 11px Outfit, sans-serif';
+      ctx.textAlign = 'right';
+      ctx.fillText(yVal.toFixed(3), margin.left - 8, y + 4);
+    }
+
+    drawDashedLine(highTol, colorHigh);
+    drawDashedLine(drawing, colorDraw);
+    drawDashedLine(lowTol, colorLow);
+
+    // ── Live Readings (Line plot) ──
+    if (visiblePts.length > 0) {
+      // Clip rendering exclusively inside the box bands so outliers don't visually bleed
+      ctx.save();
+      ctx.beginPath();
+      ctx.rect(margin.left, margin.top, cw, ch);
+      ctx.clip();
+
+      ctx.beginPath();
+      ctx.strokeStyle = '#38bdf8'; // bright blue
+      ctx.lineWidth = 2;
+      ctx.lineJoin = 'round';
+
+      visiblePts.forEach((pt, i) => {
+        const trueXIndex = (pt.count - 1); // Real index from 0 to N
+        const x = xToPixel(trueXIndex);
+        const y = yToPixel(pt.reading);
+        // Only start drawing on the first visible point
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      });
+      ctx.stroke();
+
+      // Draw circular dots over each data point
+      ctx.fillStyle = '#ffffff';
+      visiblePts.forEach((pt, i) => {
+        const trueXIndex = (pt.count - 1); // Real index from 0 to N
+        const x = xToPixel(trueXIndex);
+        const y = yToPixel(pt.reading);
+        ctx.beginPath();
+        ctx.arc(x, y, 3.5, 0, Math.PI * 2);
+        ctx.fill();
+      });
+
+      ctx.restore();
     }
   }
 
