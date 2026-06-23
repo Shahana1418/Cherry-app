@@ -2617,31 +2617,6 @@ document.addEventListener('DOMContentLoaded', async () => {
       ctx.lineJoin = 'round';
       ctx.stroke();
 
-      // Glowing dots at each data point
-      pts.forEach((pt) => {
-        const { x, y } = getXY(pt);
-
-        // Outer glow ring
-        const dotGrad = ctx.createRadialGradient(x, y, 0, x, y, 9);
-        dotGrad.addColorStop(0, 'rgba(56,189,248,0.35)');
-        dotGrad.addColorStop(0.5, 'rgba(56,189,248,0.12)');
-        dotGrad.addColorStop(1, 'rgba(56,189,248,0.00)');
-        ctx.beginPath();
-        ctx.arc(x, y, 9, 0, Math.PI * 2);
-        ctx.fillStyle = dotGrad;
-        ctx.fill();
-
-        // Core dot
-        ctx.save();
-        ctx.shadowBlur = 8;
-        ctx.shadowColor = NEON_LINE;
-        ctx.beginPath();
-        ctx.arc(x, y, 3.5, 0, Math.PI * 2);
-        ctx.fillStyle = '#ffffff';
-        ctx.fill();
-        ctx.restore();
-      });
-
       // Latest reading value badge
       if (pts.length > 0) {
         const { x, y } = getXY(pts[pts.length - 1]);
